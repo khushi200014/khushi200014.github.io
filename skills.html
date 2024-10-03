@@ -7,14 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
         }
         
         h1, h2, h3 {
@@ -39,6 +36,33 @@
             height: 100%;
             z-index: -1;
         }
+
+        /* Light mode styles */
+        :root {
+          --bg-color: #ffffff;
+          --text-color: #1a202c;
+          --card-bg: #f7fafc;
+        }
+
+        /* Dark mode styles */
+        .dark {
+          --bg-color: #1a202c;
+          --text-color: #e2e8f0;
+          --card-bg: #2d3748;
+        }
+
+        body {
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+        .bg-gray-800 {
+          background-color: var(--card-bg);
+        }
+
+        .bg-gray-900 { background-color: var(--bg-color); }
+        .text-white { color: var(--text-color); }
 
         .skill-bar {
             transition: width 1s ease-in-out;
@@ -75,97 +99,136 @@
                 <li><a href="projects.html" class="hover:text-blue-400 transition duration-300">Projects</a></li>
                 <li><a href="contact.html" class="hover:text-blue-400 transition duration-300">Contact</a></li>
             </ul>
+            <button id="theme-toggle" class="text-2xl focus:outline-none">🌓</button>
         </nav>
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-12">
-        <h1 class="text-5xl font-bold mb-2 gradient-text text-center">Technical Expertise</h1>
-        <p class="text-xl text-center mb-12 text-gray-400">Transforming data into actionable insights</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
-                <canvas id="skillChart"></canvas>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
-                <h2 class="text-2xl font-bold mb-6 gradient-text">Core Competencies</h2>
-                <div class="space-y-4">
-                    <div class="skill-item">
-                        <div class="flex justify-between mb-1">
-                            <span class="font-semibold">Python</span>
-                            <span class="text-blue-400">Advanced</span>
+        <section class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">My Skills</h1>
+            <p class="text-xl md:text-2xl mb-8">Expertise in Data Analysis, Programming, and Web Development</p>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 gradient-text">Core Competencies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Programming Languages</h3>
+                    <div class="space-y-4">
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold">Python</span>
+                                <span class="text-blue-400">Advanced</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 90%"></div>
+                            </div>
                         </div>
-                        <div class="w-full bg-gray-700 rounded-full h-2.5">
-                            <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 90%"></div>
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold">SQL</span>
+                                <span class="text-blue-400">Advanced</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold">JavaScript</span>
+                                <span class="text-blue-400">Intermediate</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 70%"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="skill-item">
-                        <div class="flex justify-between mb-1">
-                            <span class="font-semibold">SQL</span>
-                            <span class="text-blue-400">Advanced</span>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Data Analysis Tools</h3>
+                    <div class="space-y-4">
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold">Power BI</span>
+                                <span class="text-blue-400">Advanced</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 88%"></div>
+                            </div>
                         </div>
-                        <div class="w-full bg-gray-700 rounded-full h-2.5">
-                            <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 85%"></div>
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold">Tableau</span>
+                                <span class="text-blue-400">Intermediate</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold">Excel</span>
+                                <span class="text-blue-400">Advanced</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 92%"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="skill-item">
-                        <div class="flex justify-between mb-1">
-                            <span class="font-semibold">React.js</span>
-                            <span class="text-blue-400">Intermediate</span>
-                        </div>
-                        <div class="w-full bg-gray-700 rounded-full h-2.5">
-                            <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 75%"></div>
-                        </div>
-                    </div>
-                    <!-- Add more skill bars as needed -->
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
-                <h3 class="text-xl font-bold mb-4 gradient-text">Programming</h3>
-                <ul class="space-y-2">
-                    <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>Python (Advanced)</li>
-                    <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>C/C++ (Intermediate)</li>
-                    <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>JavaScript (Intermediate)</li>
-                </ul>
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 gradient-text">Additional Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Web Development</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>HTML/CSS</li>
+                        <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>React.js</li>
+                        <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>Node.js</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Database Management</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>MySQL</li>
+                        <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>PostgreSQL</li>
+                        <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>MongoDB</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Other Skills</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Git Version Control</li>
+                        <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Agile Methodologies</li>
+                        <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Machine Learning Basics</li>
+                    </ul>
+                </div>
             </div>
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
-                <h3 class="text-xl font-bold mb-4 gradient-text">Web Development</h3>
-                <ul class="space-y-2">
-                    <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>HTML/CSS (Advanced)</li>
-                    <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>React.js (Intermediate)</li>
-                    <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>Node.js (Intermediate)</li>
-                </ul>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
-                <h3 class="text-xl font-bold mb-4 gradient-text">Data Analysis</h3>
-                <ul class="space-y-2">
-                    <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>SQL (Advanced)</li>
-                    <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Power BI (Advanced)</li>
-                    <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Tableau (Intermediate)</li>
-                </ul>
-            </div>
-        </div>
+        </section>
 
-        <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Certifications & Achievements</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
-                <h3 class="text-xl font-bold mb-2">Google Data Analytics</h3>
-                <p class="text-gray-400 mb-2">Professional Certificate</p>
-                <p class="text-sm">Expected December 2024</p>
+        <section>
+            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Certifications & Achievements</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
+                    <h3 class="text-xl font-bold mb-2">Google Data Analytics</h3>
+                    <p class="text-gray-400 mb-2">Professional Certificate</p>
+                    <p class="text-sm">Expected December 2024</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
+                    <h3 class="text-xl font-bold mb-2">HackerRank SQL</h3>
+                    <p class="text-gray-400 mb-2">Advanced Certification</p>
+                    <p class="text-sm">Completed 2023</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
+                    <h3 class="text-xl font-bold mb-2">Web Development</h3>
+                    <p class="text-gray-400 mb-2">Complete Bootcamp</p>
+                    <p class="text-sm">Udemy - 2023</p>
+                </div>
             </div>
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
-                <h3 class="text-xl font-bold mb-2">HackerRank SQL</h3>
-                <p class="text-gray-400 mb-2">Advanced Certification</p>
-                <p class="text-sm">Completed 2023</p>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
-                <h3 class="text-xl font-bold mb-2">Web Development</h3>
-                <p class="text-gray-400 mb-2">Complete Bootcamp</p>
-                <p class="text-sm">Udemy - 2023</p>
-            </div>
-        </div>
+        </section>
     </main>
 
     <footer class="bg-gray-900 text-white py-8 px-4">
@@ -175,100 +238,132 @@
     </footer>
 
     <script>
-        // Particle background setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('particles-bg'), alpha: true });
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const userTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            
+            // Set initial theme
+            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
+            updateThemeToggleButton();
+        });
+
+        // Button click handler
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            // Toggle theme
+            document.documentElement.classList.toggle('dark');
+            
+            // Save user preference
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            
+            updateThemeToggleButton();
+        });
+
+        // Update button emoji based on current theme
+        function updateThemeToggleButton() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleBtn.textContent = '☀️'; // Sun emoji for dark mode
+            } else {
+                themeToggleBtn.textContent = '🌙'; // Moon emoji for light mode
+            }
+        }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.classList.toggle('dark', e.matches);
+                updateThemeToggleButton();
+            }
+        });
+
+        
+
+
+        // Particle background
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('particles-bg'), alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const particles = new THREE.BufferGeometry();
+    const particleCount = 5000;
+
+    const posArray = new Float32Array(particleCount * 3);
+
+    for(let i = 0; i < particleCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 5;
+    }
+
+    particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    const material = new THREE.PointsMaterial({
+        size: 0.005,
+        color: 0x4a90e2
+    });
+
+    const particlesMesh = new THREE.Points(particles, material);
+    scene.add(particlesMesh);
+
+    camera.position.z = 2;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        particlesMesh.rotation.y += 0.001;
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // GSAP animations
+    gsap.from("h1", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+    gsap.from("p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
+    gsap.from(".skill-item", { 
+        opacity: 0, 
+        y: 30, 
+        duration: 0.5, 
+        stagger: 0.1,
+        scrollTrigger: {
+            trigger: ".skill-item",
+            start: "top bottom",
+            toggleActions: "play none none reverse"
+        }
+    });
+    gsap.from(".cert-badge", { 
+        opacity: 0, 
+        y: 30, 
+        duration: 0.5, 
+        stagger: 0.1,
+        scrollTrigger: {
+            trigger: ".cert-badge",
+            start: "top bottom",
+            toggleActions: "play none none reverse"
+        }
+    });
+
+    // Skill bar animation
+    const skillBars = document.querySelectorAll('.skill-bar');
+    skillBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        gsap.to(bar, {
+            width: width,
+            duration: 1.5,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: bar,
+                start: "top bottom",
+                toggleActions: "play none none reverse"
+            }
+        });
+    });
+
+    // Responsive handling
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-
-        const particles = new THREE.BufferGeometry();
-        const particleCount = 5000;
-        const posArray = new Float32Array(particleCount * 3);
-        for(let i = 0; i < particleCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 5;
-        }
-        particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const material = new THREE.PointsMaterial({
-            size: 0.005,
-            color: 0x4a90e2
-        });
-        const particlesMesh = new THREE.Points(particles, material);
-        scene.add(particlesMesh);
-        camera.position.z = 2;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            particlesMesh.rotation.y += 0.001;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // GSAP animations
-        gsap.from("h1", { opacity: 0, y: 50, duration: 1 });
-        gsap.from("p.text-xl", { opacity: 0, y: 30, duration: 1, delay: 0.3 });
-        gsap.from(".skill-item", { 
-            opacity: 0, 
-            y: 30, 
-            duration: 0.5, 
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: ".skill-item",
-                start: "top bottom",
-                toggleActions: "play none none reverse"
-            }
-        });
-        gsap.from(".cert-badge", { 
-            opacity: 0, 
-            y: 30, 
-            duration: 0.5, 
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: ".cert-badge",
-                start: "top bottom",
-                toggleActions: "play none none reverse"
-            }
-        });
-
-        // Skill Chart
-        const ctx = document.getElementById('skillChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: ['Data Analysis', 'Python', 'Web Dev', 'Databases', 'Visualization', 'Problem Solving'],
-                datasets: [{
-                    label: 'Expertise Level',
-                    data: [90, 85, 80, 85, 80, 88],
-                    backgroundColor: 'rgba(96, 165, 250, 0.2)',
-                    borderColor: 'rgba(96, 165, 250, 1)',
-                    pointBackgroundColor: 'rgba(96, 165, 250, 1)',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(96, 165, 250, 1)'
-                }]
-            },
-            options: {
-                elements: {
-                    line: {
-                        borderWidth: 3
-                    }
-                },
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: false
-                        },
-                        suggestedMin: 0,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
-
-        // Responsive handling
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
