@@ -12,8 +12,6 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
         }
         
         h1, h2, h3 {
@@ -66,11 +64,9 @@
         .bg-gray-900 { background-color: var(--bg-color); }
         .text-white { color: var(--text-color); }
 
-        .highlight-text {
-    color: #7dd3fc; /* A bright sky blue color */
-}
-
-        
+        .experience-text {
+            color: #7dd3fc;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -91,28 +87,31 @@
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-12">
-        <h1 class="text-4xl font-bold mb-8 gradient-text">Work Experience</h1>
-        
-        <div class="space-y-12">
+        <section class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">Work Experience</h1>
+            <p class="text-xl md:text-2xl mb-8">My Professional Journey in Data Analysis and AI</p>
+        </section>
+
+        <section class="space-y-12">
             <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
                 <h2 class="text-2xl font-bold mb-4 gradient-text">AI Intern (Data Analyst)</h2>
                 <p class="text-gray-400 mb-4">Infosys Limited | May 2024 - July 2024</p>
                 <ul class="list-disc list-inside space-y-2">
-                    <li class ="highlight-text">Improved diagnostic accuracy by 25% through advanced data analysis of medical images.</li>
-                    <li class ="highlight-text">Boosted data accessibility by 20% by developing interactive dashboards.</li>
-                    <li class ="highlight-text">Enhanced decision-making efficiency by 25% using data visualizations in Power BI.</li>
+                    <li class="experience-text">Improved diagnostic accuracy by 25% through advanced data analysis of medical images.</li>
+                    <li class="experience-text">Boosted data accessibility by 20% by developing interactive dashboards.</li>
+                    <li class="experience-text">Enhanced decision-making efficiency by 25% using data visualizations in Power BI.</li>
                 </ul>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
                 <h2 class="text-2xl font-bold mb-4 gradient-text">Artificial Intelligence Intern</h2>
                 <p class="text-gray-400 mb-4">Edunet Foundation | June 2023 - July 2023</p>
                 <ul class="list-disc list-inside space-y-2">
-                    <li class ="highlight-text">Transformed raw data into actionable insights using Python, SQL, and Power BI, increasing effectiveness by 30%.</li>
-                    <li class ="highlight-text">Created data visualizations and reports in Power BI to support data-driven decision-making.</li>
-                    <li class ="highlight-text">Evaluated datasets of up to 100,000 rows, showcasing ability to work with large-scale data.</li>
+                    <li class="experience-text">Transformed raw data into actionable insights using Python, SQL, and Power BI, increasing effectiveness by 30%.</li>
+                    <li class="experience-text">Created data visualizations and reports in Power BI to support data-driven decision-making.</li>
+                    <li class="experience-text">Evaluated datasets of up to 100,000 rows, showcasing ability to work with large-scale data.</li>
                 </ul>
             </div>
-        </div>
+        </section>
     </main>
 
     <footer class="bg-gray-900 text-white py-8 px-4">
@@ -122,6 +121,34 @@
     </footer>
 
     <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const userTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            
+            // Set initial theme
+            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
+            updateThemeToggleButton();
+        });
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateThemeToggleButton();
+        });
+
+        function updateThemeToggleButton() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            themeToggleBtn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.classList.toggle('dark', e.matches);
+                updateThemeToggleButton();
+            }
+        });
+
         // Particle background
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -158,8 +185,9 @@
         animate();
 
         // GSAP animations
-        gsap.from("h1", { opacity: 0, y: 50, duration: 1 });
-        gsap.from(".bg-gray-800", { opacity: 0, y: 50, duration: 1, stagger: 0.2 });
+        gsap.from("h1", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+        gsap.from("section > p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
+        gsap.from(".bg-gray-800", { opacity: 0, y: 30, duration: 1, stagger: 0.2, delay: 1.1 });
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -167,6 +195,5 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
-    <script src="theme-toggle.js"></script>
 </body>
 </html>
