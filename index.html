@@ -12,8 +12,6 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
         }
         
         h1, h2, h3 {
@@ -67,10 +65,8 @@
         .text-white { color: var(--text-color); }
 
         .project-text {
-    color: #7dd3fc; /* A bright sky blue color */
-}
-
-        
+            color: #7dd3fc;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -127,6 +123,45 @@
     </footer>
 
     <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const userTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            
+            // Set initial theme
+            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
+            updateThemeToggleButton();
+        });
+
+        // Button click handler
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            // Toggle theme
+            document.documentElement.classList.toggle('dark');
+            
+            // Save user preference
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            
+            updateThemeToggleButton();
+        });
+
+        // Update button emoji based on current theme
+        function updateThemeToggleButton() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleBtn.textContent = '☀️'; // Sun emoji for dark mode
+            } else {
+                themeToggleBtn.textContent = '🌙'; // Moon emoji for light mode
+            }
+        }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.classList.toggle('dark', e.matches);
+                updateThemeToggleButton();
+            }
+        });
+
         // Particle background
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -174,6 +209,5 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
-    <script src="theme-toggle.js"></script>
 </body>
 </html>
