@@ -1,243 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skills - Khushi Sharma Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .gradient-text {
-            background: linear-gradient(45deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .custom-shadow {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Background effect */
-        #particles-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        /* Solar System Styling */
-        .solar-system {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .orbit {
-            position: absolute;
-            border: 1px solid rgba(96, 165, 250, 0.2);
-            border-radius: 50%;
-        }
-
-        .planet {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background: radial-gradient(circle, #4a90e2, #1e5799);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-
-        .skills-list {
-            display: none;
-            position: absolute;
-            background: rgba(45, 55, 72, 0.95);
-            border-radius: 8px;
-            padding: 1rem;
-            z-index: 10;
-            width: 200px;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .planet:hover .skills-list {
-            display: block;
-        }
-
-        .orbit:nth-child(1) { width: 240px; height: 240px; }
-        .orbit:nth-child(2) { width: 380px; height: 380px; }
-        .orbit:nth-child(3) { width: 520px; height: 520px; }
-        .orbit:nth-child(4) { width: 660px; height: 660px; }
-
-        @keyframes orbit {
-            from { transform: rotateZ(0deg); }
-            to { transform: rotateZ(360deg); }
-        }
-
-        .planet-orbit {
-            position: relative;
-            animation: orbit linear infinite;
-        }
-
-        .planet-orbit:nth-child(1) { animation-duration: 15s; }
-        .planet-orbit:nth-child(2) { animation-duration: 20s; }
-        .planet-orbit:nth-child(3) { animation-duration: 25s; }
-        .planet-orbit:nth-child(4) { animation-duration: 30s; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khushi Sharma | Skills</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+    }
+    .skills-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .skill-section {
+      margin-bottom: 40px;
+    }
+    .skill-section h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .skill-item {
+      background-color: #f3f4f6;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
 </head>
-<body class="relative min-h-screen flex flex-col">
-    <!-- Particle Background -->
-    <canvas id="particles-bg"></canvas>
+<body>
+  <header class="bg-gray-800 text-white p-4 text-center">
+    <h1 class="text-3xl">Khushi Sharma's Skills</h1>
+  </header>
 
-    <!-- Header (Consistent with index.html) -->
-    <header class="py-6 px-4">
-        <nav class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="hover:text-blue-400 transition duration-300">Home</a></li>
-                <li><a href="experience.html" class="hover:text-blue-400 transition duration-300">Experience</a></li>
-                <li><a href="skills.html" class="hover:text-blue-400 transition duration-300">Skills</a></li>
-                <li><a href="projects.html" class="hover:text-blue-400 transition duration-300">Projects</a></li>
-                <li><a href="contact.html" class="hover:text-blue-400 transition duration-300">Contact</a></li>
-            </ul>
-            <button id="theme-toggle" class="text-2xl focus:outline-none">🌓</button>
-        </nav>
-    </header>
+  <main class="skills-container">
+    <!-- Programming Languages Section -->
+    <section class="skill-section">
+      <h2 class="text-2xl font-semibold">Programming Languages</h2>
+      <div class="skill-list">
+        <div class="skill-item">Python</div>
+        <div class="skill-item">JavaScript</div>
+        <div class="skill-item">SQL</div>
+        <div class="skill-item">C++</div>
+      </div>
+    </section>
 
-    <!-- Skills Section -->
-    <main class="flex-grow container mx-auto px-4 py-12 flex items-center justify-center">
-        <section>
-            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills Universe</h2>
-            <div class="solar-system">
-                <!-- Programming -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Programming
-                            <div class="skills-list">
-                                <ul>
-                                    <li>Python</li>
-                                    <li>JavaScript</li>
-                                    <li>C++</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Data Analysis -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Data Analysis
-                            <div class="skills-list">
-                                <ul>
-                                    <li>SQL</li>
-                                    <li>Power BI</li>
-                                    <li>Excel</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Web Development -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Web Dev
-                            <div class="skills-list">
-                                <ul>
-                                    <li>HTML/CSS</li>
-                                    <li>React.js</li>
-                                    <li>Node.js</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Databases -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Databases
-                            <div class="skills-list">
-                                <ul>
-                                    <li>MySQL</li>
-                                    <li>MongoDB</li>
-                                    <li>PostgreSQL</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    <!-- Data Analysis Tools Section -->
+    <section class="skill-section">
+      <h2 class="text-2xl font-semibold">Data Analysis Tools</h2>
+      <div class="skill-list">
+        <div class="skill-item">Microsoft Power BI</div>
+        <div class="skill-item">Tableau</div>
+        <div class="skill-item">Google Data Studio</div>
+        <div class="skill-item">Excel (Advanced)</div>
+        <div class="skill-item">SQL Server</div>
+      </div>
+    </section>
 
-    <!-- Footer (Consistent with index.html) -->
-    <footer class="py-6 px-4 bg-gray-900 text-center">
-        <p>&copy; 2024 Khushi Sharma. All Rights Reserved.</p>
-    </footer>
+    <!-- Machine Learning and AI Tools Section -->
+    <section class="skill-section">
+      <h2 class="text-2xl font-semibold">Machine Learning & AI</h2>
+      <div class="skill-list">
+        <div class="skill-item">Scikit-learn</div>
+        <div class="skill-item">TensorFlow</div>
+        <div class="skill-item">Keras</div>
+        <div class="skill-item">Pandas</div>
+        <div class="skill-item">NumPy</div>
+      </div>
+    </section>
 
-    <script>
-        // Theme toggle functionality (Same as index.html)
-        document.addEventListener('DOMContentLoaded', () => {
-            const userTheme = localStorage.getItem('theme');
-            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    <!-- Web Development Section -->
+    <section class="skill-section">
+      <h2 class="text-2xl font-semibold">Web Development</h2>
+      <div class="skill-list">
+        <div class="skill-item">HTML5</div>
+        <div class="skill-item">CSS3</div>
+        <div class="skill-item">JavaScript (ES6+)</div>
+        <div class="skill-item">React.js</div>
+        <div class="skill-item">Node.js</div>
+      </div>
+    </section>
 
-            // Set initial theme
-            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
-            updateThemeToggleButton();
-        });
+    <!-- Cloud and DevOps Section -->
+    <section class="skill-section">
+      <h2 class="text-2xl font-semibold">Cloud & DevOps</h2>
+      <div class="skill-list">
+        <div class="skill-item">Microsoft Azure</div>
+        <div class="skill-item">Google Cloud Platform (GCP)</div>
+        <div class="skill-item">Docker</div>
+        <div class="skill-item">Git</div>
+        <div class="skill-item">GitHub</div>
+      </div>
+    </section>
+  </main>
 
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-            updateThemeToggleButton();
-        });
-
-        function updateThemeToggleButton() {
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            themeToggleBtn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
-        }
-
-        // Show/hide skills list on hover
-        function showSkills(planet) {
-            planet.querySelector('.skills-list').style.display = 'block';
-        }
-
-        function hideSkills(planet) {
-            planet.querySelector('.skills-list').style.display = 'none';
-        }
-    </script>
+  <footer class="bg-gray-800 text-white p-4 text-center">
+    <p>&copy; 2024 Khushi Sharma</p>
+  </footer>
 </body>
 </html>
