@@ -12,6 +12,8 @@
         
         body {
             font-family: 'Poppins', sans-serif;
+            background-color: #0d1117;
+            color: white;
         }
         
         h1, h2, h3 {
@@ -53,6 +55,7 @@
             border: 1px solid rgba(96, 165, 250, 0.2);
             border-radius: 50%;
             transform-style: preserve-3d;
+            margin: 0 20px; /* Added gap between planets */
         }
         
         .planet-orbit {
@@ -83,6 +86,12 @@
             transform-style: preserve-3d;
         }
         
+        /* Realistic planet colors */
+        .planet.programming { background: radial-gradient(circle, #f9a602, #e67e22); }  /* Mars */
+        .planet.data-analysis { background: radial-gradient(circle, #4a90e2, #1e5799); } /* Neptune */
+        .planet.web-dev { background: radial-gradient(circle, #8d62a9, #6a1b9a); } /* Jupiter */
+        .planet.databases { background: radial-gradient(circle, #7cccf4, #00bcd4); } /* Earth */
+
         .planet:hover {
             transform: scale(1.2);
         }
@@ -102,9 +111,9 @@
         }
         
         .orbit:nth-child(1) { width: 240px; height: 240px; }
-        .orbit:nth-child(2) { width: 360px; height: 360px; }
-        .orbit:nth-child(3) { width: 480px; height: 480px; }
-        .orbit:nth-child(4) { width: 600px; height: 600px; }
+        .orbit:nth-child(2) { width: 380px; height: 380px; } /* Added gap */
+        .orbit:nth-child(3) { width: 520px; height: 520px; } /* Added gap */
+        .orbit:nth-child(4) { width: 660px; height: 660px; } /* Added gap */
         
         @keyframes orbit {
             from { transform: rotateZ(0deg); }
@@ -138,9 +147,10 @@
         <section class="mb-16">
             <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills Universe</h2>
             <div class="solar-system">
+                <!-- Programming -->
                 <div class="orbit">
                     <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                        <div class="planet programming" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Programming
                             <div class="skills-list">
                                 <ul class="space-y-2">
@@ -152,9 +162,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Data Analysis -->
                 <div class="orbit">
                     <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                        <div class="planet data-analysis" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Data Analysis
                             <div class="skills-list">
                                 <ul class="space-y-2">
@@ -166,9 +178,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Web Development -->
                 <div class="orbit">
                     <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                        <div class="planet web-dev" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Web Dev
                             <div class="skills-list">
                                 <ul class="space-y-2">
@@ -180,9 +194,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Databases -->
                 <div class="orbit">
                     <div class="planet-orbit">
-                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                        <div class="planet databases" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Databases
                             <div class="skills-list">
                                 <ul class="space-y-2">
@@ -199,7 +215,7 @@
 
         <section>
             <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Certifications & Achievements</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-gray-800 p-6 rounded-lg custom-shadow hover:scale-105 transition duration-300">
                     <h3 class="text-xl font-bold mb-2">Google Data Analytics</h3>
                     <p class="text-gray-400">Ongoing</p>
