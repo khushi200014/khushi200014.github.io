@@ -37,33 +37,73 @@
             z-index: -1;
         }
 
-        /* Light mode styles */
-        :root {
-          --bg-color: #ffffff;
-          --text-color: #1a202c;
-          --card-bg: #f7fafc;
+        /* Planetary System Styles */
+        #solar-system {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 40px 0;
         }
 
-        /* Dark mode styles */
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .planet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .planet-label {
+            position: absolute;
+            white-space: nowrap;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .skill-detail {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Your existing styles */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a202c;
+            --card-bg: #f7fafc;
+        }
+
         .dark {
-          --bg-color: #1a202c;
-          --text-color: #e2e8f0;
-          --card-bg: #2d3748;
+            --bg-color: #1a202c;
+            --text-color: #e2e8f0;
+            --card-bg: #2d3748;
         }
 
         body {
-          background-color: var(--bg-color);
-          color: var(--text-color);
-          transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .bg-gray-800 {
-          background-color: var(--card-bg);
-        }
-
-        .bg-gray-900 { background-color: var(--bg-color); }
+        .bg-gray-800 { background-color: var(--card-bg); }
         .text-white { color: var(--text-color); }
 
+        /* Existing animation styles */
         .skill-bar {
             transition: width 1s ease-in-out;
         }
@@ -89,6 +129,7 @@
 <body class="min-h-screen flex flex-col">
     <canvas id="particles-bg"></canvas>
     
+    <!-- Header - Keep your existing header -->
     <header class="py-6 px-4">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
@@ -105,132 +146,33 @@
 
     <main class="flex-grow container mx-auto px-4 py-12">
         <section class="text-center mb-16">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">My Skills</h1>
-            <p class="text-xl md:text-2xl mb-8">Expertise in Data Analysis, Programming, and Web Development</p>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">My Skills Universe</h1>
+            <p class="text-xl md:text-2xl mb-8">Explore my expertise across different domains</p>
         </section>
 
+        <!-- New Planetary System Section -->
+        <section class="mb-16">
+            <div id="solar-system" class="relative">
+                <div id="skill-detail" class="skill-detail text-center">
+                    <h3 class="text-2xl font-bold mb-2 gradient-text"></h3>
+                    <p class="text-lg"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Keep your existing sections -->
         <section class="mb-16">
             <h2 class="text-3xl font-bold mb-6 gradient-text">Core Competencies</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
-                    <h3 class="text-xl font-bold mb-4 gradient-text">Programming Languages</h3>
-                    <div class="space-y-4">
-                        <div class="skill-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-blue-400">Python</span>
-                                <span class="text-blue-400">Advanced</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-blue-400">SQL</span>
-                                <span class="text-blue-400">Advanced</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-blue-400">JavaScript</span>
-                                <span class="text-blue-400">Intermediate</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 70%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
-                    <h3 class="text-xl font-bold mb-4 gradient-text">Data Analysis Tools</h3>
-                    <div class="space-y-4">
-                        <div class="skill-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-blue-400">Power BI</span>
-                                <span class="text-blue-400">Advanced</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 88%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-blue-400">Tableau</span>
-                                <span class="text-blue-400">Intermediate</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-blue-400">Excel</span>
-                                <span class="text-blue-400">Advanced</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full skill-bar" style="width: 92%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold mb-6 gradient-text">Additional Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
-                    <h3 class="text-xl font-bold mb-4 gradient-text">Web Development</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>HTML/CSS</li>
-                        <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>React.js</li>
-                        <li class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>Node.js</li>
-                    </ul>
-                </div>
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
-                    <h3 class="text-xl font-bold mb-4 gradient-text">Database Management</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>MySQL</li>
-                        <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>PostgreSQL</li>
-                        <li class="flex items-center"><span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>MongoDB</li>
-                    </ul>
-                </div>
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-item">
-                    <h3 class="text-xl font-bold mb-4 gradient-text">Other Skills</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Git Version Control</li>
-                        <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Agile Methodologies</li>
-                        <li class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Machine Learning Basics</li>
-                    </ul>
-                </div>
-            </div>
+            <!-- Your existing content -->
         </section>
 
         <section>
             <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Certifications & Achievements</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
-                    <h3 class="text-xl font-bold mb-2">Google Data Analytics</h3>
-                    <p class="text-gray-400 mb-2">Professional Certificate</p>
-                    <p class="text-sm">Expected December 2024</p>
-                </div>
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
-                    <h3 class="text-xl font-bold mb-2">HackerRank SQL</h3>
-                    <p class="text-gray-400 mb-2">Advanced Certification</p>
-                    <p class="text-sm">Completed 2023</p>
-                </div>
-                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
-                    <h3 class="text-xl font-bold mb-2">Web Development</h3>
-                    <p class="text-gray-400 mb-2">Complete Bootcamp</p>
-                    <p class="text-sm">Udemy - 2023</p>
-                </div>
-            </div>
+            <!-- Your existing content -->
         </section>
     </main>
 
+    <!-- Footer - Keep your existing footer -->
     <footer class="bg-gray-900 text-white py-8 px-4">
         <div class="container mx-auto text-center">
             <p>&copy; 2024 Khushi Sharma. All rights reserved.</p>
@@ -238,132 +180,76 @@
     </footer>
 
     <script>
-        // Theme toggle functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const userTheme = localStorage.getItem('theme');
-            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Your existing scripts (theme toggle, particles background, etc.)
+        // ... (keep all your existing JavaScript)
+
+        // New Planetary System Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const solarSystem = document.getElementById('solar-system');
+            const skillDetail = document.getElementById('skill-detail');
             
-            // Set initial theme
-            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
-            updateThemeToggleButton();
+            const skills = [
+                { name: 'Python', category: 'Programming', level: 'Advanced', color: '#3776AB', details: 'Expertise in data analysis, automation, and web development using Python.' },
+                { name: 'SQL', category: 'Database', level: 'Advanced', color: '#336791', details: 'Proficient in database design, complex queries, and data manipulation.' },
+                { name: 'JavaScript', category: 'Web Dev', level: 'Intermediate', color: '#F7DF1E', details: 'Building interactive web applications with modern JavaScript frameworks.' },
+                { name: 'React', category: 'Web Dev', level: 'Intermediate', color: '#61DAFB', details: 'Creating responsive and dynamic user interfaces with React.' },
+                { name: 'Node.js', category: 'Backend', level: 'Intermediate', color: '#339933', details: 'Developing scalable server-side applications and APIs.' },
+                { name: 'Power BI', category: 'Data Analysis', level: 'Advanced', color: '#F2C811', details: 'Creating impactful data visualizations and business intelligence solutions.' }
+            ];
+
+            // Create orbits and planets
+            skills.forEach((skill, index) => {
+                const orbitSize = 60 + (index * 40);
+                const orbit = document.createElement('div');
+                orbit.className = 'orbit';
+                orbit.style.width = `${orbitSize * 2}px`;
+                orbit.style.height = `${orbitSize * 2}px`;
+
+                const planet = document.createElement('div');
+                planet.className = 'planet';
+                planet.style.width = '20px';
+                planet.style.height = '20px';
+                planet.style.backgroundColor = skill.color;
+
+                const label = document.createElement('div');
+                label.className = 'planet-label text-sm';
+                label.textContent = skill.name;
+
+                // Position planet and label
+                const angle = (index / skills.length) * Math.PI * 2;
+                const x = Math.cos(angle) * orbitSize;
+                const y = Math.sin(angle) * orbitSize;
+
+                planet.style.transform = `translate(${x}px, ${y}px)`;
+                label.style.transform = `translate(${x + 15}px, ${y}px)`;
+
+                // Event listeners
+                planet.addEventListener('mouseenter', () => {
+                    skillDetail.querySelector('h3').textContent = skill.name;
+                    skillDetail.querySelector('p').textContent = skill.details;
+                    skillDetail.style.opacity = '1';
+                    label.style.opacity = '1';
+                });
+
+                planet.addEventListener('mouseleave', () => {
+                    skillDetail.style.opacity = '0';
+                    label.style.opacity = '0.7';
+                });
+
+                orbit.appendChild(planet);
+                solarSystem.appendChild(orbit);
+                solarSystem.appendChild(label);
+
+                // Animate planet
+                gsap.to(planet, {
+                    duration: 10 + index * 2,
+                    rotation: 360,
+                    repeat: -1,
+                    ease: "none",
+                    transformOrigin: "50% 50%"
+                });
+            });
         });
-
-        // Button click handler
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            // Toggle theme
-            document.documentElement.classList.toggle('dark');
-            
-            // Save user preference
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-            
-            updateThemeToggleButton();
-        });
-
-        // Update button emoji based on current theme
-        function updateThemeToggleButton() {
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            if (document.documentElement.classList.contains('dark')) {
-                themeToggleBtn.textContent = '☀️'; // Sun emoji for dark mode
-            } else {
-                themeToggleBtn.textContent = '🌙'; // Moon emoji for light mode
-            }
-        }
-
-        // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (!localStorage.getItem('theme')) {
-                document.documentElement.classList.toggle('dark', e.matches);
-                updateThemeToggleButton();
-            }
-        });
-
-        
-
-
-        // Particle background
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('particles-bg'), alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const particles = new THREE.BufferGeometry();
-    const particleCount = 5000;
-
-    const posArray = new Float32Array(particleCount * 3);
-
-    for(let i = 0; i < particleCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 5;
-    }
-
-    particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-    const material = new THREE.PointsMaterial({
-        size: 0.005,
-        color: 0x4a90e2
-    });
-
-    const particlesMesh = new THREE.Points(particles, material);
-    scene.add(particlesMesh);
-
-    camera.position.z = 2;
-
-    function animate() {
-        requestAnimationFrame(animate);
-        particlesMesh.rotation.y += 0.001;
-        renderer.render(scene, camera);
-    }
-
-    animate();
-
-    // GSAP animations
-    gsap.from("h1", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
-    gsap.from("p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
-    gsap.from(".skill-item", { 
-        opacity: 0, 
-        y: 30, 
-        duration: 0.5, 
-        stagger: 0.1,
-        scrollTrigger: {
-            trigger: ".skill-item",
-            start: "top bottom",
-            toggleActions: "play none none reverse"
-        }
-    });
-    gsap.from(".cert-badge", { 
-        opacity: 0, 
-        y: 30, 
-        duration: 0.5, 
-        stagger: 0.1,
-        scrollTrigger: {
-            trigger: ".cert-badge",
-            start: "top bottom",
-            toggleActions: "play none none reverse"
-        }
-    });
-
-    // Skill bar animation
-    const skillBars = document.querySelectorAll('.skill-bar');
-    skillBars.forEach(bar => {
-        const width = bar.style.width;
-        bar.style.width = '0';
-        gsap.to(bar, {
-            width: width,
-            duration: 1.5,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: bar,
-                start: "top bottom",
-                toggleActions: "play none none reverse"
-            }
-        });
-    });
-
-    // Responsive handling
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-</script>
+    </script>
 </body>
 </html>
