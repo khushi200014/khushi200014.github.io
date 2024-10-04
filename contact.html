@@ -42,7 +42,6 @@
           --bg-color: #ffffff;
           --text-color: #1a202c;
           --card-bg: #f7fafc;
-          --input-bg: #e2e8f0;
         }
 
         /* Dark mode styles */
@@ -50,7 +49,6 @@
           --bg-color: #1a202c;
           --text-color: #e2e8f0;
           --card-bg: #2d3748;
-          --input-bg: #4a5568;
         }
 
         body {
@@ -66,9 +64,22 @@
         .bg-gray-900 { background-color: var(--bg-color); }
         .text-white { color: var(--text-color); }
 
-        input, textarea {
-            background-color: var(--input-bg);
-            color: var(--text-color);
+        .floating-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -92,38 +103,39 @@
     <main class="flex-grow container mx-auto px-4 py-12">
         <section class="text-center mb-16">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">Get in Touch</h1>
-            <p class="text-xl md:text-2xl mb-8">Let's collaborate and turn data into actionable insights</p>
+            <p class="text-xl md:text-2xl mb-8">I'm always open to new opportunities and collaborations</p>
         </section>
 
-        <section class="max-w-2xl mx-auto">
-            <form class="bg-gray-800 p-8 rounded-lg custom-shadow">
-                <div class="mb-6">
-                    <label for="name" class="block text-sm font-medium mb-2">Name</label>
-                    <input type="text" id="name" name="name" required 
-                           class="w-full p-3 rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div class="mb-6">
-                    <label for="email" class="block text-sm font-medium mb-2">Email</label>
-                    <input type="email" id="email" name="email" required 
-                           class="w-full p-3 rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                </div>
-                <div class="mb-6">
-                    <label for="message" class="block text-sm font-medium mb-2">Message</label>
-                    <textarea id="message" name="message" rows="5" required 
-                              class="w-full p-3 rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                    Send Message
-                </button>
-            </form>
-
-            <div class="mt-12 text-center">
-                <h2 class="text-2xl font-bold mb-4 gradient-text">Connect with Me</h2>
-                <div class="flex justify-center space-x-6">
-                    <a href="https://www.linkedin.com/in/khushisharma14" target="_blank" class="text-blue-400 hover:underline">LinkedIn</a>
-                    <a href="https://github.com/khushi200014" target="_blank" class="text-blue-400 hover:underline">GitHub</a>
-                    <a href="mailto:khushisharma200014@gmail.com" class="text-blue-400 hover:underline">Email</a>
-                </div>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="floating-card">
+                <div class="contact-icon">📧</div>
+                <h3 class="text-xl font-bold mb-2 gradient-text">Email</h3>
+                <p class="text-blue-400">khushi.sharma@example.com</p>
+            </div>
+            <div class="floating-card">
+                <div class="contact-icon">🔗</div>
+                <h3 class="text-xl font-bold mb-2 gradient-text">LinkedIn</h3>
+                <a href="https://www.linkedin.com/in/khushi-sharma" target="_blank" class="text-blue-400 hover:underline">linkedin.com/in/khushi-sharma</a>
+            </div>
+            <div class="floating-card">
+                <div class="contact-icon">🐦</div>
+                <h3 class="text-xl font-bold mb-2 gradient-text">Twitter</h3>
+                <a href="https://twitter.com/khushi_sharma" target="_blank" class="text-blue-400 hover:underline">@khushi_sharma</a>
+            </div>
+            <div class="floating-card">
+                <div class="contact-icon">📍</div>
+                <h3 class="text-xl font-bold mb-2 gradient-text">Location</h3>
+                <p class="text-blue-400">Mumbai, India</p>
+            </div>
+            <div class="floating-card">
+                <div class="contact-icon">📱</div>
+                <h3 class="text-xl font-bold mb-2 gradient-text">Phone</h3>
+                <p class="text-blue-400">+91 98765 43210</p>
+            </div>
+            <div class="floating-card">
+                <div class="contact-icon">💼</div>
+                <h3 class="text-xl font-bold mb-2 gradient-text">GitHub</h3>
+                <a href="https://github.com/khushi-sharma" target="_blank" class="text-blue-400 hover:underline">github.com/khushi-sharma</a>
             </div>
         </section>
     </main>
@@ -140,20 +152,39 @@
             const userTheme = localStorage.getItem('theme');
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             
+            // Set initial theme
             document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
             updateThemeToggleButton();
         });
 
+        // Button click handler
         document.getElementById('theme-toggle').addEventListener('click', () => {
+            // Toggle theme
             document.documentElement.classList.toggle('dark');
+            
+            // Save user preference
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            
             updateThemeToggleButton();
         });
 
+        // Update button emoji based on current theme
         function updateThemeToggleButton() {
             const themeToggleBtn = document.getElementById('theme-toggle');
-            themeToggleBtn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleBtn.textContent = '☀️'; // Sun emoji for dark mode
+            } else {
+                themeToggleBtn.textContent = '🌙'; // Moon emoji for light mode
+            }
         }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.classList.toggle('dark', e.matches);
+                updateThemeToggleButton();
+            }
+        });
 
         // Particle background
         const scene = new THREE.Scene();
@@ -192,9 +223,15 @@
 
         // GSAP animations
         gsap.from("h1", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
-        gsap.from("section > p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
-        gsap.from("form", { opacity: 0, y: 30, duration: 1, delay: 1.1 });
-        gsap.from(".mt-12", { opacity: 0, y: 30, duration: 1, delay: 1.4 });
+        gsap.from("p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
+        gsap.from(".floating-card", { 
+            opacity: 0, 
+            y: 50, 
+            duration: 1, 
+            stagger: 0.2, 
+            delay: 1.1,
+            ease: "back.out(1.7)"
+        });
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
