@@ -7,99 +7,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Ensure Particle Script is included -->
+    <script src="particles.min.js"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
 
-        /* Body and background consistency */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #0d1117; /* Background matches index.html */
+            background-color: #0d1117;
             color: white;
+            margin: 0; /* Remove any margin on the body */
+            padding: 0;
         }
-        
+
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
-        
-        /* Text Gradient */
+
         .gradient-text {
             background: linear-gradient(45deg, #60a5fa, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
-        /* Consistent shadow */
+
         .custom-shadow {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
-        
-        /* Solar System Styles */
-        .solar-system {
-            position: relative;
+
+        /* Sparkling background effect */
+        #particles-bg {
+            position: absolute;
             width: 100%;
-            height: 600px;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Set z-index to stay behind the content */
+        }
+
+        /* Solar System Styling */
+        .solar-system {
+            width: 100%;
+            height: 100vh; /* Full screen height */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
         }
 
-        /* Orbit Styles */
+        /* Planets, Orbits */
         .orbit {
             position: absolute;
             border: 1px solid rgba(96, 165, 250, 0.2);
             border-radius: 50%;
-            transform-style: preserve-3d;
         }
 
-        /* Animation for planets and their orbits */
-        .planet-orbit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            animation: orbit linear infinite;
-        }
-
-        /* Planet Styles */
         .planet {
             position: absolute;
             top: 0;
             left: 50%;
+            transform: translateX(-50%);
+            background: radial-gradient(circle, #4a90e2, #1e5799);
             width: 80px;
             height: 80px;
-            margin-left: -40px;
-            margin-top: -40px;
-            background: linear-gradient(45deg, #60a5fa, #a78bfa);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            cursor: pointer;
             transition: transform 0.3s;
         }
-        
-        /* Programming: Mars */
-        .planet.programming {
-            background: radial-gradient(circle, #f9a602, #e67e22);
-        }
 
-        /* Data Analysis: Neptune */
-        .planet.data-analysis {
-            background: radial-gradient(circle, #4a90e2, #1e5799);
-        }
-
-        /* Web Dev: Jupiter */
-        .planet.web-dev {
-            background: radial-gradient(circle, #8d62a9, #6a1b9a);
-        }
-
-        /* Databases: Earth */
-        .planet.databases {
-            background: radial-gradient(circle, #7cccf4, #00bcd4);
-        }
-
-        /* Skills List */
         .skills-list {
             display: none;
             position: absolute;
@@ -132,11 +109,11 @@
         .planet-orbit:nth-child(4) { animation-duration: 30s; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="relative min-h-screen flex flex-col">
     <!-- Particle Background -->
     <canvas id="particles-bg"></canvas>
 
-    <!-- Header (consistent with index.html) -->
+    <!-- Header (Keep same as index.html) -->
     <header class="py-6 px-4">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
@@ -151,9 +128,9 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-12">
-        <section class="mb-16">
+    <!-- Skills Section -->
+    <main class="flex-grow container mx-auto px-4 py-12 flex items-center justify-center">
+        <section>
             <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills Universe</h2>
             <div class="solar-system">
                 <!-- Programming -->
@@ -162,58 +139,55 @@
                         <div class="planet programming" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Programming
                             <div class="skills-list">
-                                <ul class="space-y-2">
-                                    <li>• Python (Advanced)</li>
-                                    <li>• SQL (Advanced)</li>
-                                    <li>• JavaScript (Intermediate)</li>
+                                <ul>
+                                    <li>Python</li>
+                                    <li>JavaScript</li>
+                                    <li>C++</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Data Analysis -->
                 <div class="orbit">
                     <div class="planet-orbit">
                         <div class="planet data-analysis" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Data Analysis
                             <div class="skills-list">
-                                <ul class="space-y-2">
-                                    <li>• Power BI (Advanced)</li>
-                                    <li>• Tableau (Intermediate)</li>
-                                    <li>• Excel (Advanced)</li>
+                                <ul>
+                                    <li>SQL</li>
+                                    <li>Power BI</li>
+                                    <li>Excel</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Web Development -->
                 <div class="orbit">
                     <div class="planet-orbit">
                         <div class="planet web-dev" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Web Dev
                             <div class="skills-list">
-                                <ul class="space-y-2">
-                                    <li>• HTML/CSS</li>
-                                    <li>• React.js</li>
-                                    <li>• Node.js</li>
+                                <ul>
+                                    <li>HTML/CSS</li>
+                                    <li>React.js</li>
+                                    <li>Node.js</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Databases -->
                 <div class="orbit">
                     <div class="planet-orbit">
                         <div class="planet databases" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
                             Databases
                             <div class="skills-list">
-                                <ul class="space-y-2">
-                                    <li>• MySQL</li>
-                                    <li>• PostgreSQL</li>
-                                    <li>• MongoDB</li>
+                                <ul>
+                                    <li>MySQL</li>
+                                    <li>MongoDB</li>
+                                    <li>PostgreSQL</li>
                                 </ul>
                             </div>
                         </div>
@@ -223,12 +197,13 @@
         </section>
     </main>
 
-    <!-- Footer (consistent with index.html) -->
+    <!-- Footer (Keep consistent with index.html) -->
     <footer class="py-6 px-4 bg-gray-900 text-center">
         <p>&copy; 2024 Khushi Sharma. All Rights Reserved.</p>
     </footer>
 
     <script>
+        // Show/hide skills list on hover
         function showSkills(planet) {
             const skillsList = planet.querySelector('.skills-list');
             skillsList.style.display = 'block';
@@ -238,6 +213,11 @@
             const skillsList = planet.querySelector('.skills-list');
             skillsList.style.display = 'none';
         }
+
+        // Initialize Particles JS (for background effect)
+        particlesJS.load('particles-bg', 'particles.json', function() {
+            console.log('Particles.js loaded');
+        });
     </script>
 </body>
 </html>
