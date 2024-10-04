@@ -37,99 +37,64 @@
             z-index: -1;
         }
 
-        /* Planetary System Styles */
-        #solar-system {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            margin: 40px 0;
-        }
-
-        .orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .planet {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .planet-label {
-            position: absolute;
-            white-space: nowrap;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .skill-detail {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        /* Your existing styles */
+        /* Light mode styles */
         :root {
-            --bg-color: #ffffff;
-            --text-color: #1a202c;
-            --card-bg: #f7fafc;
+          --bg-color: #ffffff;
+          --text-color: #1a202c;
+          --card-bg: #f7fafc;
         }
 
+        /* Dark mode styles */
         .dark {
-            --bg-color: #1a202c;
-            --text-color: #e2e8f0;
-            --card-bg: #2d3748;
+          --bg-color: #1a202c;
+          --text-color: #e2e8f0;
+          --card-bg: #2d3748;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          transition: background-color 0.3s, color 0.3s;
         }
 
-        .bg-gray-800 { background-color: var(--card-bg); }
+        .bg-gray-800 {
+          background-color: var(--card-bg);
+        }
+
+        .bg-gray-900 { background-color: var(--bg-color); }
         .text-white { color: var(--text-color); }
 
-        /* Existing animation styles */
-        .skill-bar {
-            transition: width 1s ease-in-out;
-        }
-
-        .skill-item {
+        .skill-card {
             transition: transform 0.3s ease;
         }
 
-        .skill-item:hover {
+        .skill-card:hover {
             transform: translateY(-5px);
         }
 
-        .cert-badge {
-            transition: all 0.3s ease;
+        .project-text {
+            color: #7dd3fc;
         }
 
-        .cert-badge:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        .skill-progress {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(96, 165, 250, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
     <canvas id="particles-bg"></canvas>
     
-    <!-- Header - Keep your existing header -->
     <header class="py-6 px-4">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
@@ -146,33 +111,134 @@
 
     <main class="flex-grow container mx-auto px-4 py-12">
         <section class="text-center mb-16">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">My Skills Universe</h1>
-            <p class="text-xl md:text-2xl mb-8">Explore my expertise across different domains</p>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">My Skills</h1>
+            <p class="text-xl md:text-2xl mb-8">Transforming Data into Insights</p>
         </section>
 
-        <!-- New Planetary System Section -->
         <section class="mb-16">
-            <div id="solar-system" class="relative">
-                <div id="skill-detail" class="skill-detail text-center">
-                    <h3 class="text-2xl font-bold mb-2 gradient-text"></h3>
-                    <p class="text-lg"></p>
+            <h2 class="text-3xl font-bold mb-8 gradient-text">Core Competencies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-card">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Data Analysis</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">Python</span>
+                                <span class="text-blue-400">90%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">SQL</span>
+                                <span class="text-blue-400">85%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">Power BI</span>
+                                <span class="text-blue-400">88%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-card">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Web Development</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">HTML/CSS</span>
+                                <span class="text-blue-400">85%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">React.js</span>
+                                <span class="text-blue-400">75%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="75%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">Node.js</span>
+                                <span class="text-blue-400">70%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-card">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Other Skills</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">Git</span>
+                                <span class="text-blue-400">80%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="80%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">Agile</span>
+                                <span class="text-blue-400">85%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-blue-400">Machine Learning</span>
+                                <span class="text-blue-400">65%</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 0%;" data-width="65%"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Keep your existing sections -->
         <section class="mb-16">
-            <h2 class="text-3xl font-bold mb-6 gradient-text">Core Competencies</h2>
-            <!-- Your existing content -->
-        </section>
-
-        <section>
-            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Certifications & Achievements</h2>
-            <!-- Your existing content -->
+            <h2 class="text-3xl font-bold mb-8 gradient-text text-center">Certifications</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-card">
+                    <h3 class="text-xl font-bold mb-2 gradient-text">Google Data Analytics</h3>
+                    <p class="text-blue-400 mb-2">Professional Certificate</p>
+                    <p class="text-sm">Expected December 2024</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-card">
+                    <h3 class="text-xl font-bold mb-2 gradient-text">HackerRank SQL</h3>
+                    <p class="text-blue-400 mb-2">Advanced Certification</p>
+                    <p class="text-sm">Completed 2023</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow skill-card">
+                    <h3 class="text-xl font-bold mb-2 gradient-text">Web Development</h3>
+                    <p class="text-blue-400 mb-2">Complete Bootcamp</p>
+                    <p class="text-sm">Udemy - 2023</p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- Footer - Keep your existing footer -->
     <footer class="bg-gray-900 text-white py-8 px-4">
         <div class="container mx-auto text-center">
             <p>&copy; 2024 Khushi Sharma. All rights reserved.</p>
@@ -180,74 +246,37 @@
     </footer>
 
     <script>
-        // Your existing scripts (theme toggle, particles background, etc.)
-        // ... (keep all your existing JavaScript)
+        // Your existing scripts (theme toggle, particles background)
+        // [Keep all the existing JavaScript from your index.html]
 
-        // New Planetary System Script
-        document.addEventListener('DOMContentLoaded', function() {
-            const solarSystem = document.getElementById('solar-system');
-            const skillDetail = document.getElementById('skill-detail');
-            
-            const skills = [
-                { name: 'Python', category: 'Programming', level: 'Advanced', color: '#3776AB', details: 'Expertise in data analysis, automation, and web development using Python.' },
-                { name: 'SQL', category: 'Database', level: 'Advanced', color: '#336791', details: 'Proficient in database design, complex queries, and data manipulation.' },
-                { name: 'JavaScript', category: 'Web Dev', level: 'Intermediate', color: '#F7DF1E', details: 'Building interactive web applications with modern JavaScript frameworks.' },
-                { name: 'React', category: 'Web Dev', level: 'Intermediate', color: '#61DAFB', details: 'Creating responsive and dynamic user interfaces with React.' },
-                { name: 'Node.js', category: 'Backend', level: 'Intermediate', color: '#339933', details: 'Developing scalable server-side applications and APIs.' },
-                { name: 'Power BI', category: 'Data Analysis', level: 'Advanced', color: '#F2C811', details: 'Creating impactful data visualizations and business intelligence solutions.' }
-            ];
-
-            // Create orbits and planets
-            skills.forEach((skill, index) => {
-                const orbitSize = 60 + (index * 40);
-                const orbit = document.createElement('div');
-                orbit.className = 'orbit';
-                orbit.style.width = `${orbitSize * 2}px`;
-                orbit.style.height = `${orbitSize * 2}px`;
-
-                const planet = document.createElement('div');
-                planet.className = 'planet';
-                planet.style.width = '20px';
-                planet.style.height = '20px';
-                planet.style.backgroundColor = skill.color;
-
-                const label = document.createElement('div');
-                label.className = 'planet-label text-sm';
-                label.textContent = skill.name;
-
-                // Position planet and label
-                const angle = (index / skills.length) * Math.PI * 2;
-                const x = Math.cos(angle) * orbitSize;
-                const y = Math.sin(angle) * orbitSize;
-
-                planet.style.transform = `translate(${x}px, ${y}px)`;
-                label.style.transform = `translate(${x + 15}px, ${y}px)`;
-
-                // Event listeners
-                planet.addEventListener('mouseenter', () => {
-                    skillDetail.querySelector('h3').textContent = skill.name;
-                    skillDetail.querySelector('p').textContent = skill.details;
-                    skillDetail.style.opacity = '1';
-                    label.style.opacity = '1';
+        // Add this new script for skill progress animation
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.skill-progress-bar');
+            skillBars.forEach(bar => {
+                const targetWidth = bar.getAttribute('data-width');
+                gsap.to(bar, {
+                    width: targetWidth,
+                    duration: 1.5,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: bar,
+                        start: "top bottom",
+                        toggleActions: "play none none reverse"
+                    }
                 });
+            });
+        }
 
-                planet.addEventListener('mouseleave', () => {
-                    skillDetail.style.opacity = '0';
-                    label.style.opacity = '0.7';
-                });
-
-                orbit.appendChild(planet);
-                solarSystem.appendChild(orbit);
-                solarSystem.appendChild(label);
-
-                // Animate planet
-                gsap.to(planet, {
-                    duration: 10 + index * 2,
-                    rotation: 360,
-                    repeat: -1,
-                    ease: "none",
-                    transformOrigin: "50% 50%"
-                });
+        // Animate elements on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.from("h1", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+            gsap.from("section p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
+            gsap.from(".skill-card", { 
+                opacity: 0, 
+                y: 30, 
+                duration: 0.5, 
+                stagger: 0.1,
+                onComplete: animateSkillBars
             });
         });
     </script>
