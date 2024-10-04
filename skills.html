@@ -3,219 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skills - Khushi Sharma Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Ensure Particle Script is included -->
-    <script src="particles.min.js"></script>
-    
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Skills</title>
+
+    <!-- Particles.js CDN -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #0d1117;
-            color: white;
-            margin: 0; /* Remove any margin on the body */
-            padding: 0;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .gradient-text {
-            background: linear-gradient(45deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .custom-shadow {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Sparkling background effect */
-        #particles-bg {
+        /* Particles.js Background */
+        #particles-js {
             position: absolute;
             width: 100%;
             height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1; /* Set z-index to stay behind the content */
+            background-color: #1a1a1a;
         }
 
-        /* Solar System Styling */
-        .solar-system {
-            width: 100%;
-            height: 100vh; /* Full screen height */
+        /* Skills Section */
+        .skills-section {
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .skills-container {
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
         }
 
-        /* Planets, Orbits */
-        .orbit {
-            position: absolute;
-            border: 1px solid rgba(96, 165, 250, 0.2);
-            border-radius: 50%;
+        .skill-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 150px;
+            text-align: center;
         }
 
-        .planet {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background: radial-gradient(circle, #4a90e2, #1e5799);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            transition: transform 0.3s;
+        .skill-card i {
+            font-size: 50px;
+            color: #f39c12;
         }
 
-        .skills-list {
-            display: none;
-            position: absolute;
-            background: rgba(45, 55, 72, 0.95);
-            border-radius: 8px;
-            padding: 1rem;
-            z-index: 10;
-            width: 200px;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .skill-card p {
+            margin-top: 10px;
+            font-size: 18px;
         }
-
-        /* Orbit Sizes */
-        .orbit:nth-child(1) { width: 240px; height: 240px; }
-        .orbit:nth-child(2) { width: 380px; height: 380px; }
-        .orbit:nth-child(3) { width: 520px; height: 520px; }
-        .orbit:nth-child(4) { width: 660px; height: 660px; }
-
-        /* Orbit Animations */
-        @keyframes orbit {
-            from { transform: rotateZ(0deg); }
-            to { transform: rotateZ(360deg); }
-        }
-
-        .planet-orbit:nth-child(1) { animation-duration: 15s; }
-        .planet-orbit:nth-child(2) { animation-duration: 20s; }
-        .planet-orbit:nth-child(3) { animation-duration: 25s; }
-        .planet-orbit:nth-child(4) { animation-duration: 30s; }
     </style>
 </head>
-<body class="relative min-h-screen flex flex-col">
-    <!-- Particle Background -->
-    <canvas id="particles-bg"></canvas>
-
-    <!-- Header (Keep same as index.html) -->
-    <header class="py-6 px-4">
-        <nav class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="hover:text-blue-400 transition duration-300">Home</a></li>
-                <li><a href="experience.html" class="hover:text-blue-400 transition duration-300">Experience</a></li>
-                <li><a href="skills.html" class="hover:text-blue-400 transition duration-300">Skills</a></li>
-                <li><a href="projects.html" class="hover:text-blue-400 transition duration-300">Projects</a></li>
-                <li><a href="contact.html" class="hover:text-blue-400 transition duration-300">Contact</a></li>
-            </ul>
-            <button id="theme-toggle" class="text-2xl focus:outline-none">🌓</button>
-        </nav>
-    </header>
+<body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
 
     <!-- Skills Section -->
-    <main class="flex-grow container mx-auto px-4 py-12 flex items-center justify-center">
-        <section>
-            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills Universe</h2>
-            <div class="solar-system">
-                <!-- Programming -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet programming" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Programming
-                            <div class="skills-list">
-                                <ul>
-                                    <li>Python</li>
-                                    <li>JavaScript</li>
-                                    <li>C++</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Data Analysis -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet data-analysis" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Data Analysis
-                            <div class="skills-list">
-                                <ul>
-                                    <li>SQL</li>
-                                    <li>Power BI</li>
-                                    <li>Excel</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Web Development -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet web-dev" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Web Dev
-                            <div class="skills-list">
-                                <ul>
-                                    <li>HTML/CSS</li>
-                                    <li>React.js</li>
-                                    <li>Node.js</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Databases -->
-                <div class="orbit">
-                    <div class="planet-orbit">
-                        <div class="planet databases" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                            Databases
-                            <div class="skills-list">
-                                <ul>
-                                    <li>MySQL</li>
-                                    <li>MongoDB</li>
-                                    <li>PostgreSQL</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="skills-section">
+        <h1>My Skills</h1>
+        <div class="skills-container">
+            <div class="skill-card">
+                <i class="fab fa-python"></i>
+                <p>Python</p>
             </div>
-        </section>
-    </main>
+            <div class="skill-card">
+                <i class="fas fa-database"></i>
+                <p>SQL</p>
+            </div>
+            <div class="skill-card">
+                <i class="fab fa-aws"></i>
+                <p>AWS</p>
+            </div>
+            <div class="skill-card">
+                <i class="fab fa-js"></i>
+                <p>JavaScript</p>
+            </div>
+        </div>
+    </div>
 
-    <!-- Footer (Keep consistent with index.html) -->
-    <footer class="py-6 px-4 bg-gray-900 text-center">
-        <p>&copy; 2024 Khushi Sharma. All Rights Reserved.</p>
-    </footer>
-
+    <!-- Initialize Particles.js -->
     <script>
-        // Show/hide skills list on hover
-        function showSkills(planet) {
-            const skillsList = planet.querySelector('.skills-list');
-            skillsList.style.display = 'block';
-        }
-
-        function hideSkills(planet) {
-            const skillsList = planet.querySelector('.skills-list');
-            skillsList.style.display = 'none';
-        }
-
-        // Initialize Particles JS (for background effect)
-        particlesJS.load('particles-bg', 'particles.json', function() {
+        particlesJS.load('particles-js', 'particles.json', function() {
             console.log('Particles.js loaded');
         });
     </script>
