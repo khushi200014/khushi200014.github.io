@@ -64,11 +64,8 @@
         .bg-gray-900 { background-color: var(--bg-color); }
         .text-white { color: var(--text-color); }
 
-        .project-card {
-            transition: transform 0.3s ease-in-out;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
+        .project-text {
+            color: #7dd3fc;
         }
     </style>
 </head>
@@ -96,45 +93,25 @@
         </section>
 
         <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="project-card bg-gray-800 p-6 rounded-lg custom-shadow">
-                <h3 class="text-2xl font-bold mb-4 gradient-text">Danny's Pizza Runner Case Study</h3>
-                <p class="mb-4">SQL-based analysis of pizza delivery performance, processing over 10,000 order records.</p>
-                <ul class="list-disc list-inside mb-4 text-blue-400">
-                    <li>Evaluated delivery performance using SQL</li>
-                    <li>Identified peak hours (7 pm to 9 pm) and busiest day (Sunday)</li>
-                    <li>Improved resource allocation by 15%</li>
-                </ul>
-                <a href="pizza-runner-case-study.html" class="text-blue-400 hover:underline">View Project →</a>
+            <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                <h3 class="text-xl font-bold mb-4 gradient-text">Danny's Pizza Runner Case Study</h3>
+                <p class="mb-4 project-text">SQL-based analysis of pizza delivery performance, processing over 10,000 order records.</p>
+                <a href="pizza-runner-case-study.html" class="text-blue-400 hover:underline">Learn More →</a>
             </div>
-            <div class="project-card bg-gray-800 p-6 rounded-lg custom-shadow">
-                <h3 class="text-2xl font-bold mb-4 gradient-text">TATA Data Visualization</h3>
-                <p class="mb-4">Empowering business with effective insights using Power BI, handling datasets of up to 500,000 rows.</p>
-                <ul class="list-disc list-inside mb-4 text-blue-400">
-                    <li>Enhanced business understanding through data visualizations</li>
-                    <li>Reduced decision-making time by 25%</li>
-                    <li>Presented data insights to C-suite executives</li>
-                </ul>
-                <a href="tata-visualization.html" class="text-blue-400 hover:underline">View Project →</a>
+            <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                <h3 class="text-xl font-bold mb-4 gradient-text">TATA Data Visualization</h3>
+                <p class="mb-4 project-text">Empowering business with effective insights using Power BI, handling datasets of up to 500,000 rows.</p>
+                <a href="tata-visualization.html" class="text-blue-400 hover:underline">Learn More →</a>
             </div>
-            <div class="project-card bg-gray-800 p-6 rounded-lg custom-shadow">
-                <h3 class="text-2xl font-bold mb-4 gradient-text">Accenture Data Analytics</h3>
-                <p class="mb-4">In-depth analysis of website traffic data to identify top 5 categories by popularity.</p>
-                <ul class="list-disc list-inside mb-4 text-blue-400">
-                    <li>Solved ambiguous data tasks using critical thinking</li>
-                    <li>Improved business processes by 40%</li>
-                    <li>Created compelling PowerPoint presentation on content performance</li>
-                </ul>
-                <a href="accenture-analytics.html" class="text-blue-400 hover:underline">View Project →</a>
+            <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                <h3 class="text-xl font-bold mb-4 gradient-text">Accenture Data Analytics</h3>
+                <p class="mb-4 project-text">In-depth analysis of website traffic data to identify top 5 categories by popularity.</p>
+                <a href="accenture-analytics.html" class="text-blue-400 hover:underline">Learn More →</a>
             </div>
-            <div class="project-card bg-gray-800 p-6 rounded-lg custom-shadow">
-                <h3 class="text-2xl font-bold mb-4 gradient-text">Driving Mitra</h3>
-                <p class="mb-4">AI-driven portal for driving schools, featuring Google Maps API for location services.</p>
-                <ul class="list-disc list-inside mb-4 text-blue-400">
-                    <li>Enhanced user decision-making through data-driven insights</li>
-                    <li>Improved user experience with intuitive interface</li>
-                    <li>Published in IJRASET</li>
-                </ul>
-                <a href="driving-mitra.html" class="text-blue-400 hover:underline">View Project →</a>
+            <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                <h3 class="text-xl font-bold mb-4 gradient-text">Driving Mitra</h3>
+                <p class="mb-4 project-text">AI-driven portal for driving schools, featuring Google Maps API for location services.</p>
+                <a href="driving-mitra.html" class="text-blue-400 hover:underline">Learn More →</a>
             </div>
         </section>
     </main>
@@ -151,20 +128,39 @@
             const userTheme = localStorage.getItem('theme');
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             
+            // Set initial theme
             document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
             updateThemeToggleButton();
         });
 
+        // Button click handler
         document.getElementById('theme-toggle').addEventListener('click', () => {
+            // Toggle theme
             document.documentElement.classList.toggle('dark');
+            
+            // Save user preference
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            
             updateThemeToggleButton();
         });
 
+        // Update button emoji based on current theme
         function updateThemeToggleButton() {
             const themeToggleBtn = document.getElementById('theme-toggle');
-            themeToggleBtn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleBtn.textContent = '☀️'; // Sun emoji for dark mode
+            } else {
+                themeToggleBtn.textContent = '🌙'; // Moon emoji for light mode
+            }
         }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.classList.toggle('dark', e.matches);
+                updateThemeToggleButton();
+            }
+        });
 
         // Particle background
         const scene = new THREE.Scene();
@@ -203,14 +199,8 @@
 
         // GSAP animations
         gsap.from("h1", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
-        gsap.from("section > p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
-        gsap.from(".project-card", { 
-            opacity: 0, 
-            y: 30, 
-            duration: 1, 
-            stagger: 0.2,
-            delay: 1.1 
-        });
+        gsap.from("p", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
+        gsap.from(".grid > div", { opacity: 0, y: 30, duration: 1, stagger: 0.2, delay: 1.1 });
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
