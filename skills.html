@@ -1,108 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Khushi Sharma | Skills</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-    }
-    .skills-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .skill-section {
-      margin-bottom: 40px;
-    }
-    .skill-section h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    .skill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-    .skill-item {
-      background-color: #f3f4f6;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills - Khushi Sharma Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        #particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Light mode styles */
+        :root {
+          --bg-color: #ffffff;
+          --text-color: #1a202c;
+          --card-bg: #f7fafc;
+        }
+
+        /* Dark mode styles */
+        .dark {
+          --bg-color: #1a202c;
+          --text-color: #e2e8f0;
+          --card-bg: #2d3748;
+        }
+
+        body {
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+        .bg-gray-800 {
+          background-color: var(--card-bg);
+        }
+
+        .bg-gray-900 { background-color: var(--bg-color); }
+        .text-white { color: var(--text-color); }
+
+        .project-text {
+            color: #7dd3fc;
+        }
+    </style>
 </head>
-<body>
-  <header class="bg-gray-800 text-white p-4 text-center">
-    <h1 class="text-3xl">Khushi Sharma's Skills</h1>
-  </header>
+<body class="min-h-screen flex flex-col">
+    <canvas id="particles-bg"></canvas>
+    
+    <!-- Header (Same as index.html) -->
+    <header class="py-6 px-4">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="hover:text-blue-400 transition duration-300">Home</a></li>
+                <li><a href="experience.html" class="hover:text-blue-400 transition duration-300">Experience</a></li>
+                <li><a href="skills.html" class="hover:text-blue-400 transition duration-300">Skills</a></li>
+                <li><a href="projects.html" class="hover:text-blue-400 transition duration-300">Projects</a></li>
+                <li><a href="contact.html" class="hover:text-blue-400 transition duration-300">Contact</a></li>
+            </ul>
+            <button id="theme-toggle" class="text-2xl focus:outline-none">🌓</button>
+        </nav>
+    </header>
 
-  <main class="skills-container">
-    <!-- Programming Languages Section -->
-    <section class="skill-section">
-      <h2 class="text-2xl font-semibold">Programming Languages</h2>
-      <div class="skill-list">
-        <div class="skill-item">Python</div>
-        <div class="skill-item">JavaScript</div>
-        <div class="skill-item">SQL</div>
-        <div class="skill-item">C++</div>
-      </div>
-    </section>
+    <!-- Skills Section -->
+    <main class="flex-grow container mx-auto px-4 py-12">
+        <section>
+            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Skill Category 1 -->
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Programming Languages</h3>
+                    <ul class="list-disc pl-6 text-white">
+                        <li>Python</li>
+                        <li>JavaScript</li>
+                        <li>C++</li>
+                    </ul>
+                </div>
+                <!-- Skill Category 2 -->
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Data Analysis Tools</h3>
+                    <ul class="list-disc pl-6 text-white">
+                        <li>SQL</li>
+                        <li>Power BI</li>
+                        <li>Excel</li>
+                    </ul>
+                </div>
+                <!-- Skill Category 3 -->
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Web Development</h3>
+                    <ul class="list-disc pl-6 text-white">
+                        <li>HTML/CSS</li>
+                        <li>React.js</li>
+                        <li>Node.js</li>
+                    </ul>
+                </div>
+                <!-- Skill Category 4 -->
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow">
+                    <h3 class="text-xl font-bold mb-4 gradient-text">Databases</h3>
+                    <ul class="list-disc pl-6 text-white">
+                        <li>MySQL</li>
+                        <li>MongoDB</li>
+                        <li>PostgreSQL</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <!-- Data Analysis Tools Section -->
-    <section class="skill-section">
-      <h2 class="text-2xl font-semibold">Data Analysis Tools</h2>
-      <div class="skill-list">
-        <div class="skill-item">Microsoft Power BI</div>
-        <div class="skill-item">Tableau</div>
-        <div class="skill-item">Google Data Studio</div>
-        <div class="skill-item">Excel (Advanced)</div>
-        <div class="skill-item">SQL Server</div>
-      </div>
-    </section>
+    <!-- Footer (Same as index.html) -->
+    <footer class="bg-gray-900 text-white py-8 px-4">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Khushi Sharma. All rights reserved.</p>
+        </div>
+    </footer>
 
-    <!-- Machine Learning and AI Tools Section -->
-    <section class="skill-section">
-      <h2 class="text-2xl font-semibold">Machine Learning & AI</h2>
-      <div class="skill-list">
-        <div class="skill-item">Scikit-learn</div>
-        <div class="skill-item">TensorFlow</div>
-        <div class="skill-item">Keras</div>
-        <div class="skill-item">Pandas</div>
-        <div class="skill-item">NumPy</div>
-      </div>
-    </section>
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const userTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            
+            // Set initial theme
+            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
+            updateThemeToggleButton();
+        });
 
-    <!-- Web Development Section -->
-    <section class="skill-section">
-      <h2 class="text-2xl font-semibold">Web Development</h2>
-      <div class="skill-list">
-        <div class="skill-item">HTML5</div>
-        <div class="skill-item">CSS3</div>
-        <div class="skill-item">JavaScript (ES6+)</div>
-        <div class="skill-item">React.js</div>
-        <div class="skill-item">Node.js</div>
-      </div>
-    </section>
+        // Button click handler
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            // Toggle theme
+            document.documentElement.classList.toggle('dark');
+            
+            // Save user preference
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            
+            updateThemeToggleButton();
+        });
 
-    <!-- Cloud and DevOps Section -->
-    <section class="skill-section">
-      <h2 class="text-2xl font-semibold">Cloud & DevOps</h2>
-      <div class="skill-list">
-        <div class="skill-item">Microsoft Azure</div>
-        <div class="skill-item">Google Cloud Platform (GCP)</div>
-        <div class="skill-item">Docker</div>
-        <div class="skill-item">Git</div>
-        <div class="skill-item">GitHub</div>
-      </div>
-    </section>
-  </main>
+        // Update button emoji based on current theme
+        function updateThemeToggleButton() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleBtn.textContent = '☀️'; // Sun emoji for dark mode
+            } else {
+                themeToggleBtn.textContent = '🌙'; // Moon emoji for light mode
+            }
+        }
 
-  <footer class="bg-gray-800 text-white p-4 text-center">
-    <p>&copy; 2024 Khushi Sharma</p>
-  </footer>
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.classList.toggle('dark', e.matches);
+                updateThemeToggleButton();
+            }
+        });
+    </script>
 </body>
 </html>
