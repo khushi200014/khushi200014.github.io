@@ -293,6 +293,7 @@
         }
 
         window.addEventListener('resize', () => {
+            const canvas = document.getElementById('particles-bg');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
