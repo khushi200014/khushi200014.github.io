@@ -1,7 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills - Khushi Sharma Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        #particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Light/Dark mode styles */
+        :root {
+          --bg-color: #ffffff;
+          --text-color: #1a202c;
+          --card-bg: #f7fafc;
+        }
+
+        .dark {
+          --bg-color: #1a202c;
+          --text-color: #e2e8f0;
+          --card-bg: #2d3748;
+        }
+
+        body {
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+        .bg-gray-800 {
+          background-color: var(--card-bg);
+        }
+
+        /* Solar System Styles */
         .solar-system {
             position: relative;
             width: 100%;
@@ -26,13 +85,10 @@
             width: 100%;
             height: 100%;
             animation: orbit linear infinite;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
         }
         
         .planet {
-            position: relative;
+            position: absolute;
             width: 80px;
             height: 80px;
             background: linear-gradient(45deg, #60a5fa, #a78bfa);
@@ -60,88 +116,133 @@
             z-index: 10;
             width: 200px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            left: 90px;
+            top: 50%;
+            transform: translateY(-50%);
         }
         
-        .orbit:nth-child(1) { width: 200px; height: 200px; }
-        .orbit:nth-child(2) { width: 300px; height: 300px; }
-        .orbit:nth-child(3) { width: 400px; height: 400px; }
-        .orbit:nth-child(4) { width: 500px; height: 500px; }
+        .orbit:nth-child(1) { width: 240px; height: 240px; }
+        .orbit:nth-child(2) { width: 360px; height: 360px; }
+        .orbit:nth-child(3) { width: 480px; height: 480px; }
+        .orbit:nth-child(4) { width: 600px; height: 600px; }
         
-        .planet-container:nth-child(2) { animation-duration: 20s; }
-        .planet-container:nth-child(2) { animation-duration: 25s; }
-        .planet-container:nth-child(2) { animation-duration: 30s; }
-        .planet-container:nth-child(2) { animation-duration: 35s; }
+        .orbit:nth-child(1) .planet-container { animation-duration: 15s; }
+        .orbit:nth-child(2) .planet-container { animation-duration: 20s; }
+        .orbit:nth-child(3) .planet-container { animation-duration: 25s; }
+        .orbit:nth-child(4) .planet-container { animation-duration: 30s; }
         
         @keyframes orbit {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+
+        .cert-badge {
+            transition: all 0.3s ease;
+        }
+        
+        .cert-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
-<body>
-    <section class="mb-16">
-        <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills Universe</h2>
-        <div class="solar-system">
-            <div class="orbit">
-                <div class="planet-container">
-                    <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                        Programming
-                        <div class="skills-list">
-                            <ul class="space-y-2">
-                                <li>• Python (Advanced)</li>
-                                <li>• SQL (Advanced)</li>
-                                <li>• JavaScript (Intermediate)</li>
-                            </ul>
+<body class="min-h-screen flex flex-col">
+    <canvas id="particles-bg"></canvas>
+    
+    <main class="flex-grow container mx-auto px-4 py-12">
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills Universe</h2>
+            <div class="solar-system">
+                <div class="orbit">
+                    <div class="planet-container">
+                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                            Programming
+                            <div class="skills-list">
+                                <ul class="space-y-2">
+                                    <li>• Python (Advanced)</li>
+                                    <li>• SQL (Advanced)</li>
+                                    <li>• JavaScript (Intermediate)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="orbit">
+                    <div class="planet-container">
+                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                            Data Analysis
+                            <div class="skills-list">
+                                <ul class="space-y-2">
+                                    <li>• Power BI (Advanced)</li>
+                                    <li>• Tableau (Intermediate)</li>
+                                    <li>• Excel (Advanced)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="orbit">
+                    <div class="planet-container">
+                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                            Web Dev
+                            <div class="skills-list">
+                                <ul class="space-y-2">
+                                    <li>• HTML/CSS</li>
+                                    <li>• React.js</li>
+                                    <li>• Node.js</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="orbit">
+                    <div class="planet-container">
+                        <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
+                            Databases
+                            <div class="skills-list">
+                                <ul class="space-y-2">
+                                    <li>• MySQL</li>
+                                    <li>• PostgreSQL</li>
+                                    <li>• MongoDB</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="orbit">
-                <div class="planet-container">
-                    <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                        Data Analysis
-                        <div class="skills-list">
-                            <ul class="space-y-2">
-                                <li>• Power BI (Advanced)</li>
-                                <li>• Tableau (Intermediate)</li>
-                                <li>• Excel (Advanced)</li>
-                            </ul>
-                        </div>
-                    </div>
+        </section>
+
+        <section>
+            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Certifications & Achievements</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
+                    <h3 class="text-xl font-bold mb-2">Google Data Analytics</h3>
+                    <p class="text-gray-400 mb-2">Professional Certificate</p>
+                    <p class="text-sm">Expected December 2024</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
+                    <h3 class="text-xl font-bold mb-2">HackerRank SQL</h3>
+                    <p class="text-gray-400 mb-2">Advanced Certification</p>
+                    <p class="text-sm">Completed 2023</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg custom-shadow cert-badge">
+                    <h3 class="text-xl font-bold mb-2">Web Development</h3>
+                    <p class="text-gray-400 mb-2">Complete Bootcamp</p>
+                    <p class="text-sm">Udemy - 2023</p>
                 </div>
             </div>
-            <div class="orbit">
-                <div class="planet-container">
-                    <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                        Web Dev
-                        <div class="skills-list">
-                            <ul class="space-y-2">
-                                <li>• HTML/CSS</li>
-                                <li>• React.js</li>
-                                <li>• Node.js</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="orbit">
-                <div class="planet-container">
-                    <div class="planet" onmouseenter="showSkills(this)" onmouseleave="hideSkills(this)">
-                        Databases
-                        <div class="skills-list">
-                            <ul class="space-y-2">
-                                <li>• MySQL</li>
-                                <li>• PostgreSQL</li>
-                                <li>• MongoDB</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const userTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            
+            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
+        });
+
         function showSkills(planet) {
             const skillsList = planet.querySelector('.skills-list');
             skillsList.style.display = 'block';
@@ -151,6 +252,47 @@
             const skillsList = planet.querySelector('.skills-list');
             skillsList.style.display = 'none';
         }
+
+        // Particle background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('particles-bg'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const particles = new THREE.BufferGeometry();
+        const particleCount = 5000;
+
+        const posArray = new Float32Array(particleCount * 3);
+
+        for(let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 5;
+        }
+
+        particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.005,
+            color: 0x4a90e2
+        });
+
+        const particlesMesh = new THREE.Points(particles, material);
+        scene.add(particlesMesh);
+
+        camera.position.z = 2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
