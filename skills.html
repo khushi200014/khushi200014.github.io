@@ -9,23 +9,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
-        
+
         body {
             font-family: 'Poppins', sans-serif;
+            overflow: hidden;
         }
         
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
-        
+
         .gradient-text {
             background: linear-gradient(45deg, #60a5fa, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        
-        .custom-shadow {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .hover-text {
@@ -34,26 +31,26 @@
 
         /* Light mode styles */
         :root {
-          --bg-color: #ffffff;
-          --text-color: #1a202c;
-          --card-bg: #f7fafc;
+            --bg-color: #ffffff;
+            --text-color: #1a202c;
+            --card-bg: #f7fafc;
         }
 
         /* Dark mode styles */
         .dark {
-          --bg-color: #1a202c;
-          --text-color: #e2e8f0;
-          --card-bg: #2d3748;
+            --bg-color: #1a202c;
+            --text-color: #e2e8f0;
+            --card-bg: #2d3748;
         }
 
         body {
-          background-color: var(--bg-color);
-          color: var(--text-color);
-          transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .bg-gray-800 {
-          background-color: var(--card-bg);
+            background-color: var(--card-bg);
         }
 
         .bg-gray-900 { background-color: var(--bg-color); }
@@ -83,9 +80,26 @@
             color: var(--text-color);
         }
 
+        .glow-effect {
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+        }
+
         canvas {
             width: 100%;
             height: 100%;
+        }
+
+        /* Consistency with index.html */
+        header {
+            font-family: 'Playfair Display', serif;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--card-bg);
         }
 
     </style>
@@ -108,7 +122,7 @@
         </nav>
     </header>
 
-    <!-- Skills Section with Planets -->
+    <!-- Skills Section with Interactive Planets -->
     <main class="flex-grow container mx-auto px-4 py-12">
         <section id="skills" class="relative">
             <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
@@ -185,31 +199,39 @@
         // Create planets (skill categories)
         const planets = [];
 
+        const colors = [0x4a90e2, 0x7dd3fc, 0xa78bfa, 0x60a5fa]; // Matching gradient colors
         for (let i = 0; i < 4; i++) {
-            const geometry = new THREE.SphereGeometry(0.2, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x4a90e2 });
+            const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const material = new THREE.MeshStandardMaterial({ color: colors[i], emissive: colors[i], emissiveIntensity: 0.5 });
             const planet = new THREE.Mesh(geometry, material);
-            planet.position.x = Math.random() * 2 - 1;
-            planet.position.y = Math.random() * 2 - 1;
-            planet.position.z = Math.random() * 2 - 1;
-            planet.position.normalize().multiplyScalar(2);
-            scene.add(planet);
+            planet.position.x = i * 2 - 3; // Spread them out
+            planet.position.y = Math.random() * 2 - 1; // Randomize vertical position
             planets.push(planet);
+            scene.add(planet);
         }
 
-        camera.position.z = 3;
+        // Light and camera settings
+        const light = new THREE.PointLight(0xffffff, 1.2);
+        light.position.set(0, 0, 5);
+        scene.add(light);
 
-        // Animation loop
+        camera.position.z = 5;
+
+        // Planet rotation and orbit effect
         function animate() {
             requestAnimationFrame(animate);
-
             planets.forEach((planet, index) => {
-                planet.rotation.y += 0.01;
-                planet.rotation.x += 0.01;
+                planet.rotation.y += 0.01 * (index + 1); // Different rotation speeds
+                planet.rotation.x += 0.005 * (index + 1);
 
-                const planetDiv = document.getElementById(`planet${index + 1}`);
+                const orbitRadius = 2 + index * 0.5; // Orbit radius increases with each planet
+                planet.position.x = Math.cos(Date.now() * 0.001 + index) * orbitRadius;
+                planet.position.y = Math.sin(Date.now() * 0.001 + index) * orbitRadius;
+
+                // Smooth skill info positioning based on 3D position
                 const planetScreenPos = planet.position.clone().project(camera);
-                planetDiv.style.transform = `translate(${(planetScreenPos.x * window.innerWidth) / 2 + window.innerWidth / 2}px, ${(planetScreenPos.y * -window.innerHeight) / 2 + window.innerHeight / 2}px)`;
+                const skillDiv = document.getElementById(`planet${index + 1}`);
+                skillDiv.style.transform = `translate(${(planetScreenPos.x * window.innerWidth) / 2 + window.innerWidth / 2}px, ${(planetScreenPos.y * -window.innerHeight) / 2 + window.innerHeight / 2}px)`;
             });
 
             renderer.render(scene, camera);
@@ -217,11 +239,7 @@
 
         animate();
 
-        // Hover effect
-        planets.forEach((planet, index) => {
-            planet.userData.index = index + 1;
-        });
-
+        // Hover effect with glow
         renderer.domElement.addEventListener('mousemove', (event) => {
             const mouse = new THREE.Vector2();
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -236,6 +254,9 @@
             if (intersects.length > 0) {
                 const index = intersects[0].object.userData.index;
                 document.getElementById(`planet${index}`).style.display = 'block';
+                intersects[0].object.material.emissiveIntensity = 1.0; // Highlight on hover
+            } else {
+                planets.forEach(planet => planet.material.emissiveIntensity = 0.5); // Reset when not hovered
             }
         });
 
