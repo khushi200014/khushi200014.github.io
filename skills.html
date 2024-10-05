@@ -53,27 +53,49 @@
         .bg-gray-900 { background-color: var(--bg-color); }
         .text-white { color: var(--text-color); }
 
-        #scene {
+        /* Sparkle Effect Background */
+        #sparkle-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: radial-gradient(circle, rgba(20,20,20,1) 0%, rgba(40,40,40,1) 100%);
+            z-index: -2;
+        }
+
+        #sparkle-background:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            background-image: url('sparkle.png'); /* Use your sparkle image */
+            background-size: cover;
+            background-position: center;
+            animation: sparkleAnimation 10s linear infinite;
             z-index: -1;
         }
 
+        @keyframes sparkleAnimation {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Planets Styles */
         .planet-skill {
             position: absolute;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100px; /* Smaller size */
-            height: 100px; /* Smaller size */
+            width: 80px; /* Smaller size */
+            height: 80px; /* Smaller size */
             border-radius: 50%;
             text-align: center;
             background-color: rgba(255, 255, 255, 0.1);
             font-family: 'Poppins', sans-serif;
-            font-size: 12px; /* Smaller text */
+            font-size: 10px; /* Smaller text */
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -114,6 +136,7 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
+    <div id="sparkle-background"></div>
     <canvas id="scene"></canvas>
 
     <!-- Header (Same as index.html) -->
@@ -176,16 +199,17 @@
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('scene'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        // Create planets (skill categories)
-        const planets = [];
+        scene.background = null;
 
-        const colors = [0x4a90e2, 0x7dd3fc, 0xa78bfa, 0x60a5fa, 0xff8c00]; // Matching gradient colors
+        // Planet creation
+        const planets = [];
+        const planetGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+        const planetMaterial = new THREE.MeshPhongMaterial({ color: 0x8888ff });
+
+        // Create 5 planets
         for (let i = 0; i < 5; i++) {
-            const geometry = new THREE.SphereGeometry(0.3, 32, 32); // Smaller planet size
-            const material = new THREE.MeshStandardMaterial({ color: colors[i], emissive: colors[i], emissiveIntensity: 0.5 });
-            const planet = new THREE.Mesh(geometry, material);
-            planet.position.x = Math.sin((i / 5) * Math.PI * 2) * 2.5; // Smaller circular orbit
+            const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+            planet.position.x = Math.sin((i / 5) * Math.PI * 2) * 2.5;
             planet.position.y = Math.cos((i / 5) * Math.PI * 2) * 2.5;
             planets.push(planet);
             scene.add(planet);
