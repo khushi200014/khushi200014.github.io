@@ -26,10 +26,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .hover-text {
-            display: none;
-        }
-
         /* Light mode styles */
         :root {
             --bg-color: #ffffff;
@@ -71,13 +67,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 120px;
-            height: 120px;
+            width: 100px; /* Smaller size */
+            height: 100px; /* Smaller size */
             border-radius: 50%;
             text-align: center;
             background-color: rgba(255, 255, 255, 0.1);
             font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-size: 12px; /* Smaller text */
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -111,11 +107,10 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
-            font-size: 48px;
+            font-size: 36px;
             color: var(--text-color);
             font-family: 'Playfair Display', serif;
         }
-
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -187,68 +182,37 @@
 
         const colors = [0x4a90e2, 0x7dd3fc, 0xa78bfa, 0x60a5fa, 0xff8c00]; // Matching gradient colors
         for (let i = 0; i < 5; i++) {
-            const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const geometry = new THREE.SphereGeometry(0.3, 32, 32); // Smaller planet size
             const material = new THREE.MeshStandardMaterial({ color: colors[i], emissive: colors[i], emissiveIntensity: 0.5 });
             const planet = new THREE.Mesh(geometry, material);
-            planet.position.x = Math.sin((i / 5) * Math.PI * 2) * 3; // Circular arrangement
-            planet.position.y = Math.cos((i / 5) * Math.PI * 2) * 3;
-            planet.userData.index = i + 1;
+            planet.position.x = Math.sin((i / 5) * Math.PI * 2) * 2.5; // Smaller circular orbit
+            planet.position.y = Math.cos((i / 5) * Math.PI * 2) * 2.5;
             planets.push(planet);
             scene.add(planet);
         }
 
-        // Add lighting and camera positioning
+        // Light and camera setup
         const light = new THREE.PointLight(0xffffff, 1.2);
         light.position.set(0, 0, 5);
         scene.add(light);
         camera.position.z = 5;
 
-        // Animate the planets and their orbits
+        // Animate planets
         function animate() {
             requestAnimationFrame(animate);
             planets.forEach((planet, index) => {
-                planet.rotation.y += 0.01 * (index + 1); // Rotate planets
+                planet.rotation.y += 0.01 * (index + 1);
                 planet.rotation.x += 0.005 * (index + 1);
 
-                const orbitRadius = 3 + index * 0.5; // Orbit radius for spacing
+                const orbitRadius = 2.5; // Smaller orbit radius
                 planet.position.x = Math.cos(Date.now() * 0.001 + index) * orbitRadius;
                 planet.position.y = Math.sin(Date.now() * 0.001 + index) * orbitRadius;
-
-                // Align skill labels with planets
-                const planetScreenPos = planet.position.clone().project(camera);
-                const skillDiv = document.getElementById(`planet${index + 1}`);
-                skillDiv.style.transform = `translate(${(planetScreenPos.x * window.innerWidth) / 2 + window.innerWidth / 2}px, ${(planetScreenPos.y * -window.innerHeight) / 2 + window.innerHeight / 2}px)`;
             });
 
             renderer.render(scene, camera);
         }
 
         animate();
-
-        // Hover effect for glow
-        renderer.domElement.addEventListener('mousemove', (event) => {
-            const mouse = new THREE.Vector2();
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            const raycaster = new THREE.Raycaster();
-            raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(planets);
-
-            document.querySelectorAll('.planet-skill').forEach(div => div.classList.remove('glow-effect'));
-
-            if (intersects.length > 0) {
-                const index = intersects[0].object.userData.index;
-                document.getElementById(`planet${index}`).classList.add('glow-effect');
-            }
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
     </script>
 </body>
 </html>
