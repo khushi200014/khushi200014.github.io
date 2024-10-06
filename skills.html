@@ -12,8 +12,6 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            margin: 0;
-            overflow: hidden;
         }
 
         h1, h2, h3 {
@@ -26,15 +24,8 @@
             -webkit-text-fill-color: transparent;
         }
 
-        #skills-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        #webgl-output {
-            position: absolute;
+        #particles-bg {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -42,17 +33,62 @@
             z-index: -1;
         }
 
-        /* Core-skill styles (3D glowing sphere) */
-        .core-skill-label {
+        #skills-container {
+            position: relative;
+            width: 100%;
+            height: 65vh; /* Adjusted height for better visual alignment */
+            overflow: hidden;
+            margin-top: 10px; /* Moved the planets section upward */
+        }
+
+        .planet {
             position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .planet:hover {
+            transform: scale(1.2);
+        }
+
+        .planet h3 {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .core-skill {
+            position: absolute;
+            width: 200px;
+            height: 200px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
-            color: #fff;
+            border-radius: 50%;
+            background-color: #60a5fa;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             font-size: 18px;
             font-weight: bold;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.8);
+        }
+
+        /* Light mode styles */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a202c;
+            --card-bg: #f7fafc;
         }
 
         /* Dark mode styles */
@@ -68,20 +104,23 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
+        .bg-gray-800 {
+            background-color: var(--card-bg);
+        }
+
         .bg-gray-900 { background-color: var(--bg-color); }
         .text-white { color: var(--text-color); }
     </style>
 </head>
-<body>
-    <div id="webgl-output"></div> <!-- Placeholder for Three.js scene -->
+<body class="min-h-screen flex flex-col">
+    <canvas id="particles-bg"></canvas>
 
-    <header class="py-6 px-4 absolute top-0 left-0 right-0">
+    <header class="py-6 px-4">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
             <ul class="flex space-x-6">
                 <li><a href="index.html" class="hover:text-blue-400 transition duration-300">Home</a></li>
                 <li><a href="experience.html" class="hover:text-blue-400 transition duration-300">Experience</a></li>
-                <li><a href="skills.html" class="hover:text-blue-400 transition duration-300">Skills</a></li>
                 <li><a href="projects.html" class="hover:text-blue-400 transition duration-300">Projects</a></li>
                 <li><a href="contact.html" class="hover:text-blue-400 transition duration-300">Contact</a></li>
             </ul>
@@ -89,85 +128,142 @@
         </nav>
     </header>
 
-    <!-- Core Skill Label -->
-    <div class="core-skill-label">Core Skill</div>
+    <main class="flex-grow container mx-auto px-4 py-12">
+        <div id="skills-container">
+            <div class="core-skill">Core Skill</div> <!-- Core skill in the center -->
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-8 px-4">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Khushi Sharma. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
-        // Setting up the scene, camera, and renderer
+        // Particle background
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-output'), alpha: true });
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('particles-bg'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040); // Soft light
-        scene.add(ambientLight);
+        const particles = new THREE.BufferGeometry();
+        const particleCount = 5000;
 
-        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-        pointLight.position.set(5, 5, 5);
-        pointLight.castShadow = true;
-        scene.add(pointLight);
+        const posArray = new Float32Array(particleCount * 3);
 
-        // Core Skill (glowing orb)
-        const coreGeometry = new THREE.SphereGeometry(1, 32, 32);
-        const coreMaterial = new THREE.MeshPhongMaterial({
-            color: 0x60a5fa,
-            emissive: 0x1f51ff,
-            shininess: 100
-        });
-        const coreSphere = new THREE.Mesh(coreGeometry, coreMaterial);
-        coreSphere.position.set(0, 0, 0);
-        coreSphere.castShadow = true;
-        scene.add(coreSphere);
-
-        // Orbiting planets (with textures)
-        const planets = [];
-        const planetTextureLoader = new THREE.TextureLoader();
-
-        function createPlanet(size, texture, position) {
-            const geometry = new THREE.SphereGeometry(size, 32, 32);
-            const material = new THREE.MeshPhongMaterial({
-                map: planetTextureLoader.load(texture)
-            });
-            const planet = new THREE.Mesh(geometry, material);
-            planet.position.set(position.x, position.y, position.z);
-            planet.castShadow = true;
-            scene.add(planet);
-            planets.push(planet);
+        for(let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 5;
         }
 
-        // Example planets
-        createPlanet(0.5, 'https://threejs.org/examples/textures/earth.jpg', { x: 3, y: 0, z: 0 }); // Earth
-        createPlanet(0.4, 'https://threejs.org/examples/textures/mars.jpg', { x: -3, y: 0, z: 0 }); // Mars
-        createPlanet(0.6, 'https://threejs.org/examples/textures/jupiter.jpg', { x: 0, y: 3, z: 0 }); // Jupiter
+        particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-        camera.position.z = 6;
+        const material = new THREE.PointsMaterial({
+            size: 0.005,
+            color: 0x4a90e2
+        });
 
-        // Animation for orbiting and rotating
-        function animate() {
-            requestAnimationFrame(animate);
+        const particlesMesh = new THREE.Points(particles, material);
+        scene.add(particlesMesh);
 
-            // Rotate core sphere
-            coreSphere.rotation.y += 0.005;
+        camera.position.z = 2;
 
-            // Rotate and orbit planets
-            planets.forEach((planet, index) => {
-                const speed = 0.01 + index * 0.003; // Varying speeds for each planet
-                planet.rotation.y += speed;
-                planet.rotation.x += speed / 2;
-
-                const radius = 3 + index * 0.5; // Orbit radius
-                const angle = performance.now() * speed * 0.0005;
-
-                planet.position.x = Math.cos(angle) * radius;
-                planet.position.z = Math.sin(angle) * radius;
-            });
-
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            particlesMesh.rotation.y += 0.001;
             renderer.render(scene, camera);
         }
 
-        animate();
+        animateParticles();
+
+        // Planets
+        const planets = [
+            {
+                name: 'Programming Languages',
+                color: '#007bff',
+                skills: ['Python', 'JavaScript', 'C++', 'Java', 'Go', 'PHP', 'TypeScript', 'C#'],
+            },
+            {
+                name: 'Data Analysis Tools',
+                color: '#dc3545',
+                skills: ['SQL', 'Power BI', 'Excel', 'Tableau', 'R', 'Python', 'Pandas', 'NumPy'],
+            },
+            {
+                name: 'Web Development',
+                color: '#28a745',
+                skills: ['HTML/CSS', 'JavaScript', 'React.js', 'Node.js', 'Angular', 'Vue.js', 'Next.js'],
+            },
+            {
+                name: 'Databases',
+                color: '#ffc107',
+                skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQLite', 'Redis', 'Cassandra'],
+            },
+            {
+                name: 'DevOps',
+                color: '#1576c3',
+                skills: ['Docker', 'Kubernetes', 'Jenkins', 'Git', 'AWS'],
+            },
+        ];
+
+        function createPlanet(planet, index) {
+            const planetEl = document.createElement('div');
+            planetEl.className = 'planet';
+            planetEl.style.backgroundColor = planet.color;
+
+            const contentEl = document.createElement('h3');
+            contentEl.textContent = planet.name;
+            planetEl.appendChild(contentEl);
+
+            document.getElementById('skills-container').appendChild(planetEl);
+
+            // Set initial position for circular motion
+            const angle = (index / planets.length) * Math.PI * 2;
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
+            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75;
+            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150;
+
+            planetEl.style.left = `${x}px`;
+            planetEl.style.top = `${y}px`;
+
+            // Hover effect to show skills
+            planetEl.addEventListener('mouseover', () => {
+                contentEl.textContent = planet.skills.join(', ');
+                planetEl.style.transform = 'scale(1.2)';
+            });
+
+            planetEl.addEventListener('mouseout', () => {
+                contentEl.textContent = planet.name;
+                planetEl.style.transform = 'scale(1)';
+            });
+
+            return planetEl;
+        }
+
+        function animatePlanets() {
+            const planetEls = document.querySelectorAll('.planet');
+            planetEls.forEach((planetEl, index) => {
+                const angleSpeed = 0.01 + index * 0.002;  // Different speed for each planet
+                let angle = 0;
+
+                function rotate() {
+                    angle += angleSpeed;
+
+                    const radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
+                    const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75;
+                    const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150;
+
+                    planetEl.style.left = `${x}px`;
+                    planetEl.style.top = `${y}px`;
+
+                    requestAnimationFrame(rotate);
+                }
+
+                rotate();
+            });
+        }
+
+        planets.forEach((planet, index) => createPlanet(planet, index));
+        animatePlanets();
 
         // Dark mode toggle
         const themeToggle = document.getElementById('theme-toggle');
@@ -177,15 +273,6 @@
             document.body.classList.toggle('dark');
             isDarkMode = !isDarkMode;
             themeToggle.textContent = isDarkMode ? '🌞' : '🌙';
-        });
-
-        // Handle window resize for responsiveness
-        window.addEventListener('resize', () => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            renderer.setSize(width, height);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
         });
     </script>
 </body>
