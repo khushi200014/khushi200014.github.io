@@ -36,76 +36,77 @@
         #skills-container {
             position: relative;
             width: 100%;
-            height: 65vh; /* Adjusted height for better visual alignment */
-            overflow: hidden;
-            margin-top: 10px; /* Moved the planets section upward */
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .planet {
             position: absolute;
-            width: 150px;
-            height: 150px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 14px;
+            font-weight: bold;
             color: #fff;
             text-align: center;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
         .planet:hover {
             transform: scale(1.2);
         }
 
-        .planet h3 {
-            font-size: 16px;
-            font-weight: bold;
+        .planet-content {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
 
-        .core-skill {
+        .planet:hover .planet-content {
+            opacity: 1;
+        }
+
+        .central-skill {
             position: absolute;
             width: 200px;
             height: 200px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             border-radius: 50%;
-            background-color: #60a5fa;
-            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #60a5fa;
+            color: white;
             text-align: center;
             font-size: 18px;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(96, 165, 250, 0.8);
+            box-shadow: 0 0 20px #60a5fa;
         }
 
         /* Light mode styles */
         :root {
-            --bg-color: #ffffff;
-            --text-color: #1a202c;
-            --card-bg: #f7fafc;
+          --bg-color: #ffffff;
+          --text-color: #1a202c;
+          --card-bg: #f7fafc;
         }
 
         /* Dark mode styles */
         .dark {
-            --bg-color: #0f172a;
-            --text-color: #e2e8f0;
-            --card-bg: #1e293b;
+          --bg-color: #0f172a;
+          --text-color: #e2e8f0;
+          --card-bg: #1e293b;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          transition: background-color 0.3s, color 0.3s;
         }
 
         .bg-gray-800 {
-            background-color: var(--card-bg);
+          background-color: var(--card-bg);
         }
 
         .bg-gray-900 { background-color: var(--bg-color); }
@@ -121,6 +122,7 @@
             <ul class="flex space-x-6">
                 <li><a href="index.html" class="hover:text-blue-400 transition duration-300">Home</a></li>
                 <li><a href="experience.html" class="hover:text-blue-400 transition duration-300">Experience</a></li>
+                <li><a href="skills.html" class="hover:text-blue-400 transition duration-300">Skills</a></li>
                 <li><a href="projects.html" class="hover:text-blue-400 transition duration-300">Projects</a></li>
                 <li><a href="contact.html" class="hover:text-blue-400 transition duration-300">Contact</a></li>
             </ul>
@@ -129,8 +131,9 @@
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-12">
+        <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
         <div id="skills-container">
-            <div class="core-skill">Core Skill</div> <!-- Core skill in the center -->
+            <div class="central-skill">Core Skills</div>
         </div>
     </main>
 
@@ -208,72 +211,81 @@
         function createPlanet(planet, index) {
             const planetEl = document.createElement('div');
             planetEl.className = 'planet';
+            planetEl.style.width = '100px';
+            planetEl.style.height = '100px';
             planetEl.style.backgroundColor = planet.color;
+            planetEl.style.boxShadow = `0 0 20px ${planet.color}`;
+            planetEl.style.position = 'absolute';
 
-            const contentEl = document.createElement('h3');
-            contentEl.textContent = planet.name;
+            const contentEl = document.createElement('div');
+            contentEl.className = 'planet-content';
+            contentEl.innerHTML = `
+                <h3 class="text-sm font-bold mb-2">${planet.name}</h3>
+                <ul class="text-xs">
+                    ${planet.skills.map(skill => `<li>${skill}</li>`).join('')}
+                </ul>
+            `;
+
+            planetEl.innerText = planet.name;
             planetEl.appendChild(contentEl);
 
-            document.getElementById('skills-container').appendChild(planetEl);
-
-            // Set initial position for circular motion
             const angle = (index / planets.length) * Math.PI * 2;
-            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
-            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75;
-            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150;
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
 
-            planetEl.style.left = `${x}px`;
-            planetEl.style.top = `${y}px`;
-
-            // Hover effect to show skills
-            planetEl.addEventListener('mouseover', () => {
-                contentEl.textContent = planet.skills.join(', ');
-                planetEl.style.transform = 'scale(1.2)';
-            });
-
-            planetEl.addEventListener('mouseout', () => {
-                contentEl.textContent = planet.name;
-                planetEl.style.transform = 'scale(1)';
+            gsap.to(planetEl, {
+                x: x,
+                y: y,
+                duration: 0,
+                delay: 0,
             });
 
             return planetEl;
         }
 
-        function animatePlanets() {
-            const planetEls = document.querySelectorAll('.planet');
-            planetEls.forEach((planetEl, index) => {
-                const angleSpeed = 0.01 + index * 0.002;  // Different speed for each planet
-                let angle = 0;
-
-                function rotate() {
-                    angle += angleSpeed;
-
-                    const radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
-                    const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75;
-                    const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150;
-
-                    planetEl.style.left = `${x}px`;
-                    planetEl.style.top = `${y}px`;
-
-                    requestAnimationFrame(rotate);
-                }
-
-                rotate();
+        function initializePlanets() {
+            const container = document.getElementById('skills-container');
+            planets.forEach((planet, index) => {
+                const planetEl = createPlanet(planet, index);
+                container.appendChild(planetEl);
             });
         }
 
-        planets.forEach((planet, index) => createPlanet(planet, index));
-        animatePlanets();
+        
 
-        // Dark mode toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        let isDarkMode = false;
 
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-            isDarkMode = !isDarkMode;
-            themeToggle.textContent = isDarkMode ? '🌞' : '🌙';
-        });
-    </script>
+            function animatePlanets() {
+                const planetEls = document.querySelectorAll('.planet');
+
+                planetEls.forEach((planetEl, index) => {
+                    const angleOffset = Math.PI * 2 * (index / planets.length);
+                    const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+
+                    gsap.to(planetEl, {
+                        rotation: 360,
+                        ease: "linear",
+                        repeat: -1,
+                        duration: 15 + index * 2,
+                        modifiers: {
+                            x: (x) => Math.cos(angleOffset + gsap.getProperty(planetEl, 'rotation') * Math.PI / 180) * radius + 'px',
+                            y: (y) => Math.sin(angleOffset + gsap.getProperty(planetEl, 'rotation') * Math.PI / 180) * radius + 'px',
+                        },
+                    });
+                });
+            }
+
+            // Dark Mode Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark');
+            });
+
+            // Initialize planets
+            initializePlanets();
+            animatePlanets();
+        </script>
 </body>
 </html>
