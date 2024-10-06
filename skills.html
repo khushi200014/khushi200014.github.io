@@ -12,9 +12,6 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
         }
 
         h1, h2, h3 {
@@ -39,11 +36,9 @@
         #skills-container {
             position: relative;
             width: 100%;
-            height: 70vh; /* Adjusted for proper space */
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: 60vh; /* Adjusted height for better visual alignment */
+            overflow: hidden;
+            margin-top: 20px; /* Move the planets section upward */
         }
 
         .planet {
@@ -57,27 +52,26 @@
             color: #fff;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out, background-color 0.3s;
+            transition: transform 0.3s ease-in-out;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
         .planet:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
         }
 
         .planet h3 {
             font-size: 16px;
             font-weight: bold;
-            text-align: center;
-            pointer-events: none;
         }
 
         .core-skill {
             position: absolute;
             width: 200px;
             height: 200px;
-            top: calc(50% - 100px);
-            left: calc(50% - 100px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             border-radius: 50%;
             background-color: #60a5fa;
             color: white;
@@ -88,11 +82,6 @@
             font-size: 18px;
             font-weight: bold;
             box-shadow: 0 0 20px rgba(96, 165, 250, 0.8);
-            pointer-events: none;
-        }
-
-        .core-skill:hover {
-            transform: scale(1.1);
         }
 
         /* Light mode styles */
@@ -132,7 +121,6 @@
             <ul class="flex space-x-6">
                 <li><a href="index.html" class="hover:text-blue-400 transition duration-300">Home</a></li>
                 <li><a href="experience.html" class="hover:text-blue-400 transition duration-300">Experience</a></li>
-                <li><a href="skills.html" class="hover:text-blue-400 transition duration-300">Skills</a></li>
                 <li><a href="projects.html" class="hover:text-blue-400 transition duration-300">Projects</a></li>
                 <li><a href="contact.html" class="hover:text-blue-400 transition duration-300">Contact</a></li>
             </ul>
@@ -141,7 +129,6 @@
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-12">
-        <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
         <div id="skills-container">
             <div class="core-skill">Core Skill</div> <!-- Core skill in the center -->
         </div>
@@ -194,7 +181,7 @@
             {
                 name: 'Programming Languages',
                 color: '#007bff',
-                skills: ['Python', 'JavaScript', 'C++', 'Java', 'PHP', 'TypeScript', 'C#'],
+                skills: ['Python', 'JavaScript', 'C++', 'Java', 'Go', 'PHP', 'TypeScript', 'C#'],
             },
             {
                 name: 'Data Analysis Tools',
@@ -204,17 +191,17 @@
             {
                 name: 'Web Development',
                 color: '#28a745',
-                skills: ['HTML/CSS', 'React.js', 'Node.js', 'Angular', 'Next.js'],
+                skills: ['HTML/CSS', 'JavaScript', 'React.js', 'Node.js', 'Angular', 'Vue.js', 'Next.js'],
             },
             {
                 name: 'Databases',
                 color: '#ffc107',
-                skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQLite', 'Redis'],
+                skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQLite', 'Redis', 'Cassandra'],
             },
             {
                 name: 'DevOps',
                 color: '#1576c3',
-                skills: ['Docker', 'Kubernetes', 'Jenkins','Git', 'AWS'],
+                skills: ['Docker', 'Kubernetes', 'Jenkins', 'Git', 'AWS'],
             },
         ];
 
@@ -227,10 +214,13 @@
             contentEl.textContent = planet.name;
             planetEl.appendChild(contentEl);
 
+            document.getElementById('skills-container').appendChild(planetEl);
+
+            // Set initial position for circular motion
             const angle = (index / planets.length) * Math.PI * 2;
-            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
-            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75; // Adjusted for size
-            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150; // Adjusted for size
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
+            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75;
+            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150;
 
             planetEl.style.left = `${x}px`;
             planetEl.style.top = `${y}px`;
@@ -246,19 +236,39 @@
                 planetEl.style.transform = 'scale(1)';
             });
 
-            document.getElementById('skills-container').appendChild(planetEl);
+            return planetEl;
         }
 
-        planets.forEach((planet, index) => {
-            createPlanet(planet, index);
-        });
+        function animatePlanets() {
+            const planetEls = document.querySelectorAll('.planet');
+            planetEls.forEach((planetEl, index) => {
+                const angleSpeed = 0.01 + index * 0.002;  // Different speed for each planet
+                let angle = 0;
+
+                function rotate() {
+                    angle += angleSpeed;
+
+                    const radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
+                    const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75;
+                    const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150;
+
+                    planetEl.style.left = `${x}px`;
+                    planetEl.style.top = `${y}px`;
+
+                    requestAnimationFrame(rotate);
+                }
+
+                rotate();
+            });
+        }
+
+        planets.forEach(createPlanet);
+        animatePlanets();
 
         // Theme toggle
         const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-
         themeToggle.addEventListener('click', () => {
-            html.classList.toggle('dark');
+            document.documentElement.classList.toggle('dark');
         });
     </script>
 </body>
