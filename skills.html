@@ -12,8 +12,6 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
         }
 
         h1, h2, h3 {
@@ -39,7 +37,9 @@
             position: relative;
             width: 100%;
             height: 80vh;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .planet {
@@ -57,7 +57,7 @@
         }
 
         .planet:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
         }
 
         .planet-content {
@@ -68,6 +68,49 @@
         .planet:hover .planet-content {
             opacity: 1;
         }
+
+        .central-skill {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #60a5fa;
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 0 20px #60a5fa;
+        }
+
+        /* Light mode styles */
+        :root {
+          --bg-color: #ffffff;
+          --text-color: #1a202c;
+          --card-bg: #f7fafc;
+        }
+
+        /* Dark mode styles */
+        .dark {
+          --bg-color: #0f172a;
+          --text-color: #e2e8f0;
+          --card-bg: #1e293b;
+        }
+
+        body {
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+        .bg-gray-800 {
+          background-color: var(--card-bg);
+        }
+
+        .bg-gray-900 { background-color: var(--bg-color); }
+        .text-white { color: var(--text-color); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -89,7 +132,9 @@
 
     <main class="flex-grow container mx-auto px-4 py-12">
         <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
-        <div id="skills-container"></div>
+        <div id="skills-container">
+            <div class="central-skill">Core Skills</div>
+        </div>
     </main>
 
     <footer class="bg-gray-900 text-white py-8 px-4">
@@ -166,29 +211,35 @@
         function createPlanet(planet, index) {
             const planetEl = document.createElement('div');
             planetEl.className = 'planet';
-            planetEl.style.width = '200px';
-            planetEl.style.height = '200px';
+            planetEl.style.width = '100px';
+            planetEl.style.height = '100px';
             planetEl.style.backgroundColor = planet.color;
             planetEl.style.boxShadow = `0 0 20px ${planet.color}`;
+            planetEl.style.position = 'absolute';
 
             const contentEl = document.createElement('div');
             contentEl.className = 'planet-content';
             contentEl.innerHTML = `
-                <h3 class="text-lg font-bold mb-2">${planet.name}</h3>
-                <ul class="text-sm">
+                <h3 class="text-sm font-bold mb-2">${planet.name}</h3>
+                <ul class="text-xs">
                     ${planet.skills.map(skill => `<li>${skill}</li>`).join('')}
                 </ul>
             `;
 
+            planetEl.innerText = planet.name;
             planetEl.appendChild(contentEl);
 
             const angle = (index / planets.length) * Math.PI * 2;
             const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
-            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 100;
-            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 100;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
 
-            planetEl.style.left = `${x}px`;
-            planetEl.style.top = `${y}px`;
+            gsap.to(planetEl, {
+                x: x,
+                y: y,
+                duration: 0,
+                delay: 0,
+            });
 
             return planetEl;
         }
@@ -201,47 +252,38 @@
             });
         }
 
-        function animatePlanets() {
-            const planets = document.querySelectorAll('.planet');
-            planets.forEach((planet, index) => {
-                gsap.to(planet, {
-                    rotation: 360,
-                    duration: 20 + index * 5,
-                    repeat: -1,
-                    ease: 'none',
-                });
-            });
-        }
+        
+                    function animatePlanets() {
+                const planetEls = document.querySelectorAll('.planet');
 
-        window.addEventListener('load', () => {
+                planetEls.forEach((planetEl, index) => {
+                    const angleOffset = Math.PI * 2 * (index / planets.length);
+                    const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+
+                    gsap.to(planetEl, {
+                        rotation: 360,
+                        ease: "linear",
+                        repeat: -1,
+                        duration: 15 + index * 2,
+                        modifiers: {
+                            x: (x) => Math.cos(angleOffset + gsap.getProperty(planetEl, 'rotation') * Math.PI / 180) * radius + 'px',
+                            y: (y) => Math.sin(angleOffset + gsap.getProperty(planetEl, 'rotation') * Math.PI / 180) * radius + 'px',
+                        },
+                    });
+                });
+            }
+
+            // Dark Mode Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark');
+            });
+
+            // Initialize planets
             initializePlanets();
             animatePlanets();
-        });
-
-        window.addEventListener('resize', () => {
-            const container = document.getElementById('skills-container');
-            container.innerHTML = '';
-            initializePlanets();
-
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        // Theme toggle functionality
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        themeToggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-            updateThemeToggleButton();
-        });
-
-        function updateThemeToggleButton() {
-            if (document.body.classList.contains('dark')) {
-                themeToggleBtn.textContent = '☀️';
-            } else {
-                themeToggleBtn.textContent = '🌙';
-            }
-        }
-    </script>
+        </script>
 </body>
 </html>
