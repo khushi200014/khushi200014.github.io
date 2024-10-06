@@ -36,6 +36,10 @@
             height: 100%;
             z-index: -1;
             pointer-events: none; /* Prevent mouse events from interfering with planets */
+            /* Background Styles: Match your index.html */
+            background-color: #ffffff; /* Light mode */
+            background-color: #1a202c; /* Dark mode */
+            transition: background-color 0.3s; 
         }
 
         /* Light mode styles */
@@ -188,22 +192,27 @@
             {
                 name: 'Programming Languages',
                 color: 0x007bff, // Blue
-                skills: ['Python', 'JavaScript', 'C++', 'Java', 'Go', 'PHP'],
+                skills: ['Python', 'JavaScript', 'C++', 'Java', 'Go', 'PHP', 'TypeScript', 'C#'],
             },
             {
                 name: 'Data Analysis Tools',
                 color: 0xdc3545, // Red
-                skills: ['SQL', 'Power BI', 'Excel', 'Tableau', 'R'],
+                skills: ['SQL', 'Power BI', 'Excel', 'Tableau', 'R', 'Python', 'Pandas', 'NumPy'],
             },
             {
                 name: 'Web Development',
                 color: 0x28a745, // Green
-                skills: ['HTML/CSS', 'JavaScript', 'React.js', 'Node.js', 'Angular', 'Vue.js'],
+                skills: ['HTML/CSS', 'JavaScript', 'React.js', 'Node.js', 'Angular', 'Vue.js', 'Next.js'],
             },
             {
                 name: 'Databases',
                 color: 0xffc107, // Yellow
-                skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQLite', 'Redis'],
+                skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQLite', 'Redis', 'Cassandra'],
+            },
+            {
+                name: 'DevOps',
+                color: 0x1576c3, // Azure
+                skills: ['Docker', 'Kubernetes', 'Jenkins', 'Git', 'AWS'],
             },
         ];
 
@@ -212,9 +221,9 @@
             const material = new THREE.MeshBasicMaterial({ color: planet.color });
             const mesh = new THREE.Mesh(sphereGeometry, material);
             mesh.position.set(
-                Math.cos((index / planets.length) * Math.PI * 2) * 2,
+                Math.cos((index / planets.length) * Math.PI * 2) * 2.5, // Adjusted radius for better fit
                 0,
-                Math.sin((index / planets.length) * Math.PI * 2) * 2
+                Math.sin((index / planets.length) * Math.PI * 2) * 2.5 
             );
             scene.add(mesh);
             return mesh;
@@ -224,8 +233,8 @@
         planetMeshes.forEach((mesh, index) => {
             gsap.to(mesh.rotation, { y: Math.PI * 2, duration: 10, repeat: -1, ease: 'linear' });
             gsap.to(mesh.position, {
-                x: Math.cos((index / planets.length) * Math.PI * 2 + gsap.utils.random(0.1, 0.5)) * 2,
-                z: Math.sin((index / planets.length) * Math.PI * 2 + gsap.utils.random(0.1, 0.5)) * 2,
+                x: Math.cos((index / planets.length) * Math.PI * 2 + gsap.utils.random(0.1, 0.5)) * 2.5, // Adjusted radius for better fit
+                z: Math.sin((index / planets.length) * Math.PI * 2 + gsap.utils.random(0.1, 0.5)) * 2.5,
                 duration: 15,
                 repeat: -1,
                 yoyo: true,
