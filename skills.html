@@ -92,10 +92,9 @@
     <main class="flex-grow container mx-auto px-4 py-12">
         <section>
             <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
-            <div id="planets-container" class="relative w-full h-full">
-                <div id="tooltip" class="absolute hidden bg-gray-800 text-white p-4 rounded-lg shadow-lg">
-                    <!-- Skill content will be added here -->
-                </div>
+
+            <div id="tooltip" class="absolute hidden bg-gray-800 text-white p-4 rounded-lg shadow-lg">
+                <!-- Skill content will be added here -->
             </div>
         </section>
     </main>
@@ -172,15 +171,14 @@
         });
 
         // Three.js and GSAP for planet animation
-        const planetsContainer = document.getElementById('planets-container');
         const tooltip = document.getElementById('tooltip');
 
         // Create a scene, camera, and renderer
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, planetsContainer.offsetWidth / planetsContainer.offsetHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.createElement('canvas'), alpha: true });
-        renderer.setSize(planetsContainer.offsetWidth, planetsContainer.offsetHeight);
-        planetsContainer.appendChild(renderer.domElement);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.querySelector('main').appendChild(renderer.domElement); // Append to main
 
         // Create a sphere geometry for the planets
         const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
@@ -267,9 +265,9 @@
 
         // Handle window resize
         window.addEventListener('resize', () => {
-            camera.aspect = planetsContainer.offsetWidth / planetsContainer.offsetHeight;
+            camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(planetsContainer.offsetWidth, planetsContainer.offsetHeight);
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
