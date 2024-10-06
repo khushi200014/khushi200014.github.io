@@ -12,6 +12,8 @@
 
         body {
             font-family: 'Poppins', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
         }
 
         h1, h2, h3 {
@@ -24,10 +26,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .custom-shadow {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
-
         #particles-bg {
             position: fixed;
             top: 0;
@@ -35,49 +33,46 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none; /* Prevent mouse events from interfering with planets */
-            /* Background Styles: Match your index.html */
-            background-color: #ffffff; /* Light mode */
-            background-color: #1a202c; /* Dark mode */
-            transition: background-color 0.3s; 
         }
 
-        /* Light mode styles */
-        :root {
-          --bg-color: #ffffff;
-          --text-color: #1a202c;
-          --card-bg: #f7fafc;
+        #skills-container {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            overflow: hidden;
         }
 
-        /* Dark mode styles */
-        .dark {
-          --bg-color: #1a202c;
-          --text-color: #e2e8f0;
-          --card-bg: #2d3748;
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
         }
 
-        body {
-          background-color: var(--bg-color);
-          color: var(--text-color);
-          transition: background-color 0.3s, color 0.3s;
+        .planet:hover {
+            transform: scale(1.1);
         }
 
-        .bg-gray-800 {
-          background-color: var(--card-bg);
+        .planet-content {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
 
-        .bg-gray-900 { background-color: var(--bg-color); }
-        .text-white { color: var(--text-color); }
-
-        .project-text {
-            color: #7dd3fc;
+        .planet:hover .planet-content {
+            opacity: 1;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
     <canvas id="particles-bg"></canvas>
 
-    <!-- Header (Same as index.html) -->
     <header class="py-6 px-4">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold gradient-text">KS</a>
@@ -92,18 +87,11 @@
         </nav>
     </header>
 
-    <!-- Skills Section -->
     <main class="flex-grow container mx-auto px-4 py-12">
-        <section>
-            <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
-
-            <div id="tooltip" class="absolute hidden bg-gray-800 text-white p-4 rounded-lg shadow-lg">
-                <!-- Skill content will be added here -->
-            </div>
-        </section>
+        <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
+        <div id="skills-container"></div>
     </main>
 
-    <!-- Footer (Same as index.html) -->
     <footer class="bg-gray-900 text-white py-8 px-4">
         <div class="container mx-auto text-center">
             <p>&copy; 2024 Khushi Sharma. All rights reserved.</p>
@@ -111,173 +99,149 @@
     </footer>
 
     <script>
-        // Theme toggle functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const userTheme = localStorage.getItem('theme');
-            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Particle background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('particles-bg'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Set initial theme
-            document.documentElement.classList.toggle('dark', userTheme === 'dark' || (!userTheme && systemTheme === 'dark'));
-            updateThemeToggleButton();
-        });
+        const particles = new THREE.BufferGeometry();
+        const particleCount = 5000;
 
-        // Button click handler
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            // Toggle theme
-            document.documentElement.classList.toggle('dark');
+        const posArray = new Float32Array(particleCount * 3);
 
-            // Save user preference
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-
-            updateThemeToggleButton();
-        });
-
-        // Update button emoji based on current theme
-        function updateThemeToggleButton() {
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            if (document.documentElement.classList.contains('dark')) {
-                themeToggleBtn.textContent = '☀️'; // Sun emoji for dark mode
-            } else {
-                themeToggleBtn.textContent = '🌙'; // Moon emoji for light mode
-            }
+        for(let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 5;
         }
 
-        // Particle background (Simplified)
-        const canvas = document.getElementById('particles-bg');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-        function drawParticle() {
-            ctx.fillStyle = 'rgba(74, 144, 226, 0.2)'; // Blue color
-            ctx.beginPath();
-            ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, 1, 0, 2 * Math.PI);
-            ctx.fill();
-        }
+        const material = new THREE.PointsMaterial({
+            size: 0.005,
+            color: 0x4a90e2
+        });
+
+        const particlesMesh = new THREE.Points(particles, material);
+        scene.add(particlesMesh);
+
+        camera.position.z = 2;
 
         function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < 100; i++) {
-                drawParticle();
-            }
             requestAnimationFrame(animateParticles);
+            particlesMesh.rotation.y += 0.001;
+            renderer.render(scene, camera);
         }
 
         animateParticles();
 
-        // GSAP animations
-        gsap.from("h2", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
-        gsap.from(".grid > div", { opacity: 0, y: 30, duration: 1, stagger: 0.2, delay: 0.8 });
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        // Three.js and GSAP for planet animation
-        const tooltip = document.getElementById('tooltip');
-
-        // Create a scene, camera, and renderer
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.createElement('canvas'), alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.querySelector('main').appendChild(renderer.domElement); // Append to main
-
-        // Create a sphere geometry for the planets
-        const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-
-        // Define planets and their colors
+        // Planets
         const planets = [
             {
                 name: 'Programming Languages',
-                color: 0x007bff, // Blue
+                color: '#007bff',
                 skills: ['Python', 'JavaScript', 'C++', 'Java', 'Go', 'PHP', 'TypeScript', 'C#'],
             },
             {
                 name: 'Data Analysis Tools',
-                color: 0xdc3545, // Red
+                color: '#dc3545',
                 skills: ['SQL', 'Power BI', 'Excel', 'Tableau', 'R', 'Python', 'Pandas', 'NumPy'],
             },
             {
                 name: 'Web Development',
-                color: 0x28a745, // Green
+                color: '#28a745',
                 skills: ['HTML/CSS', 'JavaScript', 'React.js', 'Node.js', 'Angular', 'Vue.js', 'Next.js'],
             },
             {
                 name: 'Databases',
-                color: 0xffc107, // Yellow
+                color: '#ffc107',
                 skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQLite', 'Redis', 'Cassandra'],
             },
             {
                 name: 'DevOps',
-                color: 0x1576c3, // Azure
+                color: '#1576c3',
                 skills: ['Docker', 'Kubernetes', 'Jenkins', 'Git', 'AWS'],
             },
         ];
 
-        // Create planets and add them to the scene
-        const planetMeshes = planets.map((planet, index) => {
-            const material = new THREE.MeshBasicMaterial({ color: planet.color });
-            const mesh = new THREE.Mesh(sphereGeometry, material);
-            mesh.position.set(
-                Math.cos((index / planets.length) * Math.PI * 2) * 2.5, // Adjusted radius for better fit
-                0,
-                Math.sin((index / planets.length) * Math.PI * 2) * 2.5 
-            );
-            scene.add(mesh);
-            return mesh;
-        });
+        function createPlanet(planet, index) {
+            const planetEl = document.createElement('div');
+            planetEl.className = 'planet';
+            planetEl.style.width = '200px';
+            planetEl.style.height = '200px';
+            planetEl.style.backgroundColor = planet.color;
+            planetEl.style.boxShadow = `0 0 20px ${planet.color}`;
 
-        // Animate planets
-        planetMeshes.forEach((mesh, index) => {
-            gsap.to(mesh.rotation, { y: Math.PI * 2, duration: 10, repeat: -1, ease: 'linear' });
-            gsap.to(mesh.position, {
-                x: Math.cos((index / planets.length) * Math.PI * 2 + gsap.utils.random(0.1, 0.5)) * 2.5, // Adjusted radius for better fit
-                z: Math.sin((index / planets.length) * Math.PI * 2 + gsap.utils.random(0.1, 0.5)) * 2.5,
-                duration: 15,
-                repeat: -1,
-                yoyo: true,
-                ease: 'power2.inOut'
-            });
-        });
+            const contentEl = document.createElement('div');
+            contentEl.className = 'planet-content';
+            contentEl.innerHTML = `
+                <h3 class="text-lg font-bold mb-2">${planet.name}</h3>
+                <ul class="text-sm">
+                    ${planet.skills.map(skill => `<li>${skill}</li>`).join('')}
+                </ul>
+            `;
 
-        // Add event listener for hover
-        planetMeshes.forEach((mesh, index) => {
-            mesh.userData = planets[index]; // Store planet data
-            mesh.addEventListener('mouseover', (event) => {
-                const planet = event.target.userData;
-                tooltip.innerHTML = `
-                    <h4 class="text-xl font-bold mb-2 gradient-text">${planet.name}</h4>
-                    <ul class="list-disc pl-4 text-white">
-                        ${planet.skills.map(skill => `<li>${skill}</li>`).join('')}
-                    </ul>
-                `;
-                tooltip.style.left = event.clientX + 'px';
-                tooltip.style.top = event.clientY + 'px';
-                tooltip.style.display = 'block';
-            });
-            mesh.addEventListener('mouseout', () => {
-                tooltip.style.display = 'none';
-            });
-        });
+            planetEl.appendChild(contentEl);
 
-        // Set camera position
-        camera.position.z = 2;
+            const angle = (index / planets.length) * Math.PI * 2;
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 100;
+            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 100;
 
-        // Render the scene
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+            planetEl.style.left = `${x}px`;
+            planetEl.style.top = `${y}px`;
+
+            return planetEl;
         }
-        animate();
 
-        // Handle window resize
+        function initializePlanets() {
+            const container = document.getElementById('skills-container');
+            planets.forEach((planet, index) => {
+                const planetEl = createPlanet(planet, index);
+                container.appendChild(planetEl);
+            });
+        }
+
+        function animatePlanets() {
+            const planets = document.querySelectorAll('.planet');
+            planets.forEach((planet, index) => {
+                gsap.to(planet, {
+                    rotation: 360,
+                    duration: 20 + index * 5,
+                    repeat: -1,
+                    ease: 'none',
+                });
+            });
+        }
+
+        window.addEventListener('load', () => {
+            initializePlanets();
+            animatePlanets();
+        });
+
         window.addEventListener('resize', () => {
+            const container = document.getElementById('skills-container');
+            container.innerHTML = '';
+            initializePlanets();
+
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
+
+        // Theme toggle functionality
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            updateThemeToggleButton();
+        });
+
+        function updateThemeToggleButton() {
+            if (document.body.classList.contains('dark')) {
+                themeToggleBtn.textContent = '☀️';
+            } else {
+                themeToggleBtn.textContent = '🌙';
+            }
+        }
     </script>
 </body>
 </html>
