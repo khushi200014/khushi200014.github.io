@@ -36,71 +36,81 @@
         #skills-container {
             position: relative;
             width: 100%;
-            height: 80vh;
+            height: 70vh; /* Decreased height to give space for header and footer */
             overflow: hidden;
+            margin-top: 50px; /* Move the planets section slightly upward */
         }
 
         .planet {
             position: absolute;
+            width: 150px; /* Increased size */
+            height: 150px; /* Increased size */
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 16px;
-            font-weight: bold;
             color: #fff;
             text-align: center;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
-            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
         .planet:hover {
             transform: scale(1.1);
         }
 
-        /* Central Skill (Core Skill) */
-        #core-skill {
+        .planet h3 {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .core-skill {
             position: absolute;
-            width: 180px;
-            height: 180px;
-            background-color: #ff8c00;
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             border-radius: 50%;
+            background-color: #60a5fa;
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #fff;
-            font-size: 20px;
-            font-weight: bold;
             text-align: center;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 30px rgba(255, 140, 0, 0.5);
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.8);
+        }
+
+        .core-skill:hover {
+            transform: translate(-50%, -50%) scale(1.1);
         }
 
         /* Light mode styles */
         :root {
-          --bg-color: #ffffff;
-          --text-color: #1a202c;
-          --card-bg: #f7fafc;
+            --bg-color: #ffffff;
+            --text-color: #1a202c;
+            --card-bg: #f7fafc;
         }
 
         /* Dark mode styles */
         .dark {
-          --bg-color: #0f172a;
-          --text-color: #e2e8f0;
-          --card-bg: #1e293b;
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --card-bg: #1e293b;
         }
 
         body {
-          background-color: var(--bg-color);
-          color: var(--text-color);
-          transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .bg-gray-800 {
-          background-color: var(--card-bg);
+            background-color: var(--card-bg);
         }
 
         .bg-gray-900 { background-color: var(--bg-color); }
@@ -125,8 +135,10 @@
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-12">
-        <div id="core-skill">Core Skill: Data Analysis</div>
-        <div id="skills-container"></div>
+        <h2 class="text-3xl font-bold mb-6 gradient-text text-center">Skills</h2>
+        <div id="skills-container">
+            <div class="core-skill">Core Skill</div> <!-- Core skill in the center -->
+        </div>
     </main>
 
     <footer class="bg-gray-900 text-white py-8 px-4">
@@ -203,29 +215,19 @@
         function createPlanet(planet, index) {
             const planetEl = document.createElement('div');
             planetEl.className = 'planet';
-            planetEl.style.width = '150px';
-            planetEl.style.height = '150px';
             planetEl.style.backgroundColor = planet.color;
-            planetEl.style.boxShadow = `0 0 20px ${planet.color}`;
-            planetEl.style.color = '#fff';
 
-            planetEl.innerHTML = `<span>${planet.name}</span>`;
+            const contentEl = document.createElement('h3');
+            contentEl.textContent = planet.name;
+            planetEl.appendChild(contentEl);
 
             const angle = (index / planets.length) * Math.PI * 2;
             const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
-            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75;
-            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 75;
+            const x = Math.cos(angle) * radius + window.innerWidth / 2 - 75; // Adjusted for size
+            const y = Math.sin(angle) * radius + window.innerHeight / 2 - 150; // Moved upward
 
             planetEl.style.left = `${x}px`;
             planetEl.style.top = `${y}px`;
-
-            planetEl.addEventListener('mouseover', () => {
-                planetEl.innerHTML = `<ul>${planet.skills.map(skill => `<li>${skill}</li>`).join('')}</ul>`;
-            });
-
-            planetEl.addEventListener('mouseout', () => {
-                planetEl.innerHTML = `<span>${planet.name}</span>`;
-            });
 
             return planetEl;
         }
@@ -239,9 +241,7 @@
         }
 
         function animatePlanets() {
-            const planetEls = document
-
-                        querySelectorAll('.planet');
+            const planetEls = document.querySelectorAll('.planet');
             gsap.to(planetEls, {
                 rotation: 360,
                 repeat: -1,
@@ -260,7 +260,7 @@
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark');
             darkMode = !darkMode;
-            themeToggle.textContent = darkMode ? '🌞' : '🌓';
+            themeToggle.textContent = darkMode ? '☀️' : '🌙';
         });
 
         // Initialize planets on load
@@ -277,4 +277,3 @@
     </script>
 </body>
 </html>
-
