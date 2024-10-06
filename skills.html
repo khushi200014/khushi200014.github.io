@@ -190,22 +190,22 @@
             {
                 name: 'Programming Languages',
                 color: 0x007bff, // Blue
-                skills: ['Python', 'JavaScript', 'C++'],
+                skills: ['Python', 'JavaScript', 'C++', 'Java', 'Go', 'PHP'],
             },
             {
                 name: 'Data Analysis Tools',
                 color: 0xdc3545, // Red
-                skills: ['SQL', 'Power BI', 'Excel'],
+                skills: ['SQL', 'Power BI', 'Excel', 'Tableau', 'R'],
             },
             {
                 name: 'Web Development',
                 color: 0x28a745, // Green
-                skills: ['HTML/CSS', 'React.js', 'Node.js'],
+                skills: ['HTML/CSS', 'JavaScript', 'React.js', 'Node.js', 'Angular', 'Vue.js'],
             },
             {
                 name: 'Databases',
                 color: 0xffc107, // Yellow
-                skills: ['MySQL', 'MongoDB', 'PostgreSQL'],
+                skills: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQLite', 'Redis'],
             },
         ];
 
@@ -254,6 +254,9 @@
                 tooltip.style.display = 'none';
             });
         });
+
+        // Set camera position
+        camera.position.z = 2;
 
         // Render the scene
         function animate() {
